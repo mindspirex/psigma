@@ -1,6 +1,7 @@
 import clientPromise from "@/db/mongodb";
 import { Obj } from "@/types/Obj";
 import RenderObject from "@/components/RenderObject";
+import Sidebar from "@/components/SideBar";
 
 async function getObjects(): Promise<Obj[]> {
   const client = await clientPromise;
@@ -14,6 +15,7 @@ export default async function Page() {
 
   return (
     <main>
+      <Sidebar />
       {objects.map((o) => (
         <RenderObject key={o._id} obj={o} />
       ))}
