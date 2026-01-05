@@ -10,7 +10,13 @@ export function useDrag(initialX: number, initialY: number, id: string) {
   }, []);
 
   useEffect(() => {
-    const globalClickHandler = () => setSelected(false);
+    const globalClickHandler = (e: MouseEvent) => {
+      const canvas = document.querySelector(".canvas");
+      if (canvas && canvas.contains(e.target as Node)) {
+        setSelected(false);
+      }
+    };
+
     document.addEventListener("mousedown", globalClickHandler);
     return () => document.removeEventListener("mousedown", globalClickHandler);
   }, []);

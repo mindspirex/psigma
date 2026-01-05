@@ -19,9 +19,11 @@ export default async function Page() {
     <main>
       <LeftSideBar />
       <RightSideBar />
-      {objects.map((o) => (
-        <RenderObject key={o._id} obj={o} />
-      ))}
+      <div className="canvas h-screen">
+        {objects.map((o) => (
+          <RenderObject key={o._id} obj={o} />
+        ))}
+      </div>
     </main>
   );
 }
