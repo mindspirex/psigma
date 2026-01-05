@@ -13,6 +13,7 @@ async function getObjects(): Promise<Obj[]> {
 
 export default async function Page() {
   const objects = await getObjects();
+  objects.forEach((o) => (o._id = o._id.toString()));
 
   return (
     <main>

@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export type JustifyContent =
   | "flex-start"
   | "flex-end"
@@ -31,8 +33,8 @@ export type Obj = {
   isFlex: boolean;
   justifyContent: JustifyContent;
   alignItems: AlignItems;
-  gapX: number;
-  gapY: number;
+  rowGap: number;
+  columnGap: number;
 
   children: string[];
 };
