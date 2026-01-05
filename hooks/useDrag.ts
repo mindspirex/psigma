@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import type React from "react";
 
 export function useDrag(initialX: number, initialY: number, id: string) {
   const [pos, setPos] = useState({ x: initialX, y: initialY });
@@ -15,7 +16,7 @@ export function useDrag(initialX: number, initialY: number, id: string) {
   }, []);
 
   const startDragging = useCallback(
-    (e: MouseEvent) => {
+    (e: React.MouseEvent<HTMLDivElement>) => {
       if (!selected) return;
 
       const startCursor = { x: e.clientX, y: e.clientY };
