@@ -25,8 +25,6 @@ export default function Sidebar() {
         bg-foreground text-white p-5 z-10 right-0
       `}
     >
-      {!selected && <p>No object selected</p>}
-
       {selected && (
         <div className="space-y-3">
           <h2 className="font-bold text-lg">Object Properties</h2>
@@ -39,9 +37,6 @@ export default function Sidebar() {
               value={selected.x}
               onChange={(e) => update("x", Number(e.target.value))}
             />
-          </label>
-
-          <label>
             Y
             <input
               type="number"

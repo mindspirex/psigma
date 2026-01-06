@@ -1,20 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type JustifyContent =
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "space-between"
-  | "space-around"
-  | "space-evenly";
-
-export type AlignItems =
-  | "stretch"
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "baseline";
-
 export type Color = {
   red: number;
   green: number;
@@ -31,8 +16,8 @@ export type Obj = {
   backgroundColor: Color;
 
   isFlex: boolean;
-  justifyContent: JustifyContent;
-  alignItems: AlignItems;
+  justifyContent: string;
+  alignItems: string;
   rowGap: number;
   columnGap: number;
 
