@@ -21,7 +21,7 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
     document.addEventListener("mousedown", globalClickHandler);
     return () => document.removeEventListener("mousedown", globalClickHandler);
-  }, [setSelectedId]);
+  });
 
   const startDragging = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -48,7 +48,7 @@ export function useDrag(initialX: number, initialY: number, id: string) {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            _id: id,
+            id: id,
             x: startPos.x + (e.clientX - startCursor.x),
             y: startPos.y + (e.clientY - startCursor.y),
           }),

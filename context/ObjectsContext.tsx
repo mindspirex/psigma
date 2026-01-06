@@ -1,20 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type JustifyContent =
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "space-between"
-  | "space-around"
-  | "space-evenly";
-
-export type AlignItems =
-  | "stretch"
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "baseline";
-
 export type Color = {
   red: number;
   green: number;
@@ -22,7 +7,7 @@ export type Color = {
 };
 
 export type Obj = {
-  _id: string;
+  id: string;
   x: number;
   y: number;
   width: number;
@@ -31,8 +16,8 @@ export type Obj = {
   backgroundColor: Color;
 
   isFlex: boolean;
-  justifyContent: JustifyContent;
-  alignItems: AlignItems;
+  justifyContent: string;
+  alignItems: string;
   rowGap: number;
   columnGap: number;
 
@@ -41,6 +26,7 @@ export type Obj = {
 
 type ObjectsContextValue = {
   objects: Obj[];
+  setObjects: React.Dispatch<React.SetStateAction<Obj[]>>;
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
 };
@@ -64,7 +50,9 @@ export function ObjectsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ObjectsContext.Provider value={{ objects, selectedId, setSelectedId }}>
+    <ObjectsContext.Provider
+      value={{ objects, setObjects, selectedId, setSelectedId }}
+    >
       {children}
     </ObjectsContext.Provider>
   );
