@@ -3,7 +3,7 @@
 import LeftSideBar from "@/components/LeftSideBar";
 import RightSideBar from "@/components/RightSideBar";
 import Canvas from "@/components/Canvas";
-import { ObjectsProvider } from "@/context/ObjectsContext";
+import { ObjectsProvider } from "@/utility/ObjectsContext";
 
 export default function Page() {
   return (

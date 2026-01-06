@@ -1,6 +1,6 @@
 "use client";
 
-import { useObjects, Obj } from "@/context/ObjectsContext";
+import { useObjects, Obj } from "@/utility/ObjectsContext";
 
 export default function Sidebar() {
   const { objects, setObjects, selectedId } = useObjects();

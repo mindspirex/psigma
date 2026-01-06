@@ -1,7 +1,7 @@
 "use client";
 
-import { Obj, useObjects } from "@/context/ObjectsContext";
-import { useDrag } from "@/hooks/useDrag";
+import { Obj, useObjects } from "@/utility/ObjectsContext";
+import { useDrag } from "@/utility/useDrag";
 
 export default function RenderObject({ obj }: { obj: Obj }) {
   const { setSelectedId } = useObjects();

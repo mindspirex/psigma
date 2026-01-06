@@ -1,6 +1,6 @@
 "use client";
 
-import { useObjects } from "@/context/ObjectsContext";
+import { useObjects } from "@/utility/ObjectsContext";
 import RenderObject from "@/components/RenderObject";
 
 export default function Canvas() {
