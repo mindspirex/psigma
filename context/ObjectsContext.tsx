@@ -41,6 +41,7 @@ export type Obj = {
 
 type ObjectsContextValue = {
   objects: Obj[];
+  setObjects: React.Dispatch<React.SetStateAction<Obj[]>>;
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
 };
@@ -64,7 +65,9 @@ export function ObjectsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ObjectsContext.Provider value={{ objects, selectedId, setSelectedId }}>
+    <ObjectsContext.Provider
+      value={{ objects, setObjects, selectedId, setSelectedId }}
+    >
       {children}
     </ObjectsContext.Provider>
   );

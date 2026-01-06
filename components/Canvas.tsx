@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ObjectsProvider, Obj } from "@/context/ObjectsContext";
+import { Obj } from "@/context/ObjectsContext";
 import RenderObject from "@/components/RenderObject";
 
 export default function Canvas() {
@@ -19,11 +19,9 @@ export default function Canvas() {
 
   return (
     <div className="canvas h-screen">
-      <ObjectsProvider>
-        {objects.map((o) => (
-          <RenderObject key={o._id} obj={o} />
-        ))}
-      </ObjectsProvider>
+      {objects.map((o) => (
+        <RenderObject key={o._id} obj={o} />
+      ))}
     </div>
   );
 }
