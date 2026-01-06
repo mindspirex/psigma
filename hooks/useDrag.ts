@@ -9,10 +9,6 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
   const selected = selectedId === id;
 
-  const toggleSelect = useCallback(() => {
-    setSelectedId(selected ? null : id);
-  }, [selected, id, setSelectedId]);
-
   // deselect
   useEffect(() => {
     const globalClickHandler = (e: MouseEvent) => {
@@ -29,7 +25,6 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
   const startDragging = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      // optionally auto-select on click
       if (!selected) {
         setSelectedId(id);
         return;
@@ -66,5 +61,5 @@ export function useDrag(initialX: number, initialY: number, id: string) {
     [pos, selected, id, setSelectedId],
   );
 
-  return { ...pos, selected, toggleSelect, startDragging };
+  return { ...pos, selected, startDragging };
 }
