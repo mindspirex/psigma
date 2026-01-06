@@ -6,7 +6,7 @@ import { useDrag } from "@/hooks/useDrag";
 export default function RenderObject({ obj }: { obj: Obj }) {
   const { setSelectedId } = useObjects();
 
-  const { x, y, selected, startDragging } = useDrag(obj.x, obj.y, obj._id);
+  const { x, y, selected, startDragging } = useDrag(obj.x, obj.y, obj.id);
 
   const style: React.CSSProperties = {
     position: "absolute",
@@ -27,7 +27,7 @@ export default function RenderObject({ obj }: { obj: Obj }) {
     <div
       style={style}
       onMouseDown={startDragging}
-      onClick={() => setSelectedId(obj._id)}
+      onClick={() => setSelectedId(obj.id)}
     />
   );
 }

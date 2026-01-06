@@ -20,7 +20,7 @@ export default function Canvas() {
   return (
     <div className="canvas h-screen">
       {objects.map((o) => (
-        <RenderObject key={o._id} obj={o} />
+        <RenderObject key={o.id} obj={o} />
       ))}
     </div>
   );

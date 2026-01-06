@@ -7,7 +7,7 @@ export type Color = {
 };
 
 export type Obj = {
-  _id: string;
+  id: string;
   x: number;
   y: number;
   width: number;

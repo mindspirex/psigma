@@ -5,15 +5,34 @@ import { useObjects, Obj } from "@/context/ObjectsContext";
 export default function Sidebar() {
   const { objects, setObjects, selectedId } = useObjects();
 
-  const selected = objects.find((o) => o._id === selectedId);
+  const selected = objects.find((o) => o.id === selectedId);
 
   function update<K extends keyof Obj>(key: K, value: Obj[K]) {
     setObjects((objects) => {
-      const i = objects.findIndex((o) => o._id === selectedId);
+      const i = objects.findIndex((o) => o.id === selectedId);
       if (i === -1) return objects;
 
       const copy = [...objects];
-      copy[i] = { ...copy[i], [key]: value };
+      const updated = { ...copy[i], [key]: value };
+      copy[i] = updated;
+
+      // update on db
+      (async () => {
+        try {
+          await fetch("/api/objects", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              obj: updated,
+            }),
+          });
+        } catch (err) {
+          console.error("Failed to PATCH object:", err);
+        }
+      })();
+
       return copy;
     });
   }
