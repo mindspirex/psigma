@@ -8,25 +8,21 @@ export default function Sidebar() {
   const selected = objects.find((o) => o.id === selectedId);
 
   function update<K extends keyof Obj>(key: K, value: Obj[K]) {
-    setObjects((objects) => {
-      const i = objects.findIndex((o) => o.id === selectedId);
-      if (i === -1) return objects;
+    setObjects((prev) => {
+      const i = prev.findIndex((o) => o.id === selectedId);
+      if (i === -1) return prev;
 
-      const copy = [...objects];
+      const copy = [...prev];
       const updated = { ...copy[i], [key]: value };
       copy[i] = updated;
 
-      // update on db
+      // fire and forget
       (async () => {
         try {
           await fetch("/api/objects", {
             method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              obj: updated,
-            }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ obj: updated }),
           });
         } catch (err) {
           console.error("Failed to PATCH object:", err);
