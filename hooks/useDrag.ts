@@ -1,29 +1,39 @@
 import { useState, useEffect, useCallback } from "react";
+import { useObjects } from "@/context/ObjectsContext";
 import type React from "react";
 
 export function useDrag(initialX: number, initialY: number, id: string) {
+  const { selectedId, setSelectedId } = useObjects();
+
   const [pos, setPos] = useState({ x: initialX, y: initialY });
-  const [selected, setSelected] = useState(false);
+
+  const selected = selectedId === id;
 
   const toggleSelect = useCallback(() => {
-    setSelected((s) => !s);
-  }, []);
+    setSelectedId(selected ? null : id);
+  }, [selected, id, setSelectedId]);
 
+  // deselect
   useEffect(() => {
     const globalClickHandler = (e: MouseEvent) => {
       const canvas = document.querySelector(".canvas");
-      if (canvas && canvas.contains(e.target as Node)) {
-        setSelected(false);
+
+      if (canvas && e.target === canvas) {
+        setSelectedId(null);
       }
     };
 
     document.addEventListener("mousedown", globalClickHandler);
     return () => document.removeEventListener("mousedown", globalClickHandler);
-  }, []);
+  }, [setSelectedId]);
 
   const startDragging = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!selected) return;
+      // optionally auto-select on click
+      if (!selected) {
+        setSelectedId(id);
+        return;
+      }
 
       const startCursor = { x: e.clientX, y: e.clientY };
       const startPos = { ...pos };
@@ -53,7 +63,7 @@ export function useDrag(initialX: number, initialY: number, id: string) {
       document.addEventListener("mousemove", onMove);
       document.addEventListener("mouseup", onUp);
     },
-    [pos, selected, id],
+    [pos, selected, id, setSelectedId],
   );
 
   return { ...pos, selected, toggleSelect, startDragging };

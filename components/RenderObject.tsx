@@ -1,14 +1,12 @@
 "use client";
 
-import { Obj } from "@/types/Obj";
+import { Obj, useObjects } from "@/context/ObjectsContext";
 import { useDrag } from "@/hooks/useDrag";
 
 export default function RenderObject({ obj }: { obj: Obj }) {
-  const { x, y, selected, startDragging, toggleSelect } = useDrag(
-    obj.x,
-    obj.y,
-    obj._id,
-  );
+  const { setSelectedId } = useObjects();
+
+  const { x, y, selected, startDragging } = useDrag(obj.x, obj.y, obj._id);
 
   const style: React.CSSProperties = {
     position: "absolute",
@@ -26,6 +24,10 @@ export default function RenderObject({ obj }: { obj: Obj }) {
   };
 
   return (
-    <div style={style} onMouseDown={startDragging} onClick={toggleSelect} />
+    <div
+      style={style}
+      onMouseDown={startDragging}
+      onClick={() => setSelectedId(obj._id)}
+    />
   );
 }
