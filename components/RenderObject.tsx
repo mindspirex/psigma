@@ -1,7 +1,7 @@
 "use client";
 
-import { Obj, useObjects } from "@/context/ObjectsContext";
-import { useDrag } from "@/hooks/useDrag";
+import { Obj, useObjects } from "@/utility/ObjectsContext";
+import { useDrag } from "@/utility/useDrag";
 
 export default function RenderObject({ obj }: { obj: Obj }) {
   const { setSelectedId } = useObjects();
@@ -14,7 +14,7 @@ export default function RenderObject({ obj }: { obj: Obj }) {
     top: y,
     width: obj.width,
     height: obj.height,
-    backgroundColor: `rgb(${obj.backgroundColor.red},${obj.backgroundColor.green},${obj.backgroundColor.blue})`,
+    backgroundColor: obj.backgroundColor,
     display: obj.isFlex ? "flex" : "block",
     justifyContent: obj.justifyContent,
     alignItems: obj.alignItems,

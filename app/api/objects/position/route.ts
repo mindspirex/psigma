@@ -1,8 +1,8 @@
 import clientPromise from "@/db/mongodb";
 import { ObjectId } from "mongodb";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: Request) {
+export async function PATCH(req: NextRequest) {
   const { id, x, y } = await req.json();
 
   if (!id || x === undefined || y === undefined) {

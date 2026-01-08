@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useObjects } from "@/context/ObjectsContext";
+import { useObjects } from "@/utility/ObjectsContext";
 import type React from "react";
 
 export function useDrag(initialX: number, initialY: number, id: string) {
