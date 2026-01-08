@@ -3,7 +3,7 @@ import { useObjects } from "@/utility/ObjectsContext";
 import type React from "react";
 
 export function useDrag(initialX: number, initialY: number, id: string) {
-  const { selectedId, setSelectedId } = useObjects();
+  const { selectedId, setSelectedId, setObjects } = useObjects();
 
   const [pos, setPos] = useState({ x: initialX, y: initialY });
 
@@ -52,6 +52,18 @@ export function useDrag(initialX: number, initialY: number, id: string) {
           y: startPos.y + (e.clientY - startCursor.y),
         }),
       });
+
+      setObjects((prevObjects) =>
+        prevObjects.map((obj) =>
+          obj.id === id
+            ? {
+                ...obj,
+                x: startPos.x + (e.clientX - startCursor.x),
+                y: startPos.y + (e.clientY - startCursor.y),
+              }
+            : obj,
+        ),
+      );
     };
 
     document.addEventListener("mousemove", onMove);
