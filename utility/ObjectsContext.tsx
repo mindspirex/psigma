@@ -1,11 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type Color = {
-  red: number;
-  green: number;
-  blue: number;
-};
-
 export type Obj = {
   id: string;
   x: number;
@@ -13,7 +7,7 @@ export type Obj = {
   width: number;
   height: number;
 
-  backgroundColor: Color;
+  backgroundColor: string;
 
   isFlex: boolean;
   justifyContent: string;

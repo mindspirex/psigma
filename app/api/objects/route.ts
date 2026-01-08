@@ -42,19 +42,21 @@ export async function PATCH(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { data } = body;
+    const { id, ...data } = body;
 
     const client = await clientPromise;
     const db = client.db("psigma");
 
     const result = await db.collection("objects").insertOne({
+      _id: new ObjectId(),
       ...data,
     });
 
+    console.log(data);
+
     return NextResponse.json(
       {
-        success: true,
-        insertedId: result.insertedId,
+        id: result.insertedId,
       },
       { status: 201 },
     );

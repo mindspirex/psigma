@@ -14,7 +14,7 @@ export default function RenderObject({ obj }: { obj: Obj }) {
     top: y,
     width: obj.width,
     height: obj.height,
-    backgroundColor: `rgb(${obj.backgroundColor.red},${obj.backgroundColor.green},${obj.backgroundColor.blue})`,
+    backgroundColor: obj.backgroundColor,
     display: obj.isFlex ? "flex" : "block",
     justifyContent: obj.justifyContent,
     alignItems: obj.alignItems,

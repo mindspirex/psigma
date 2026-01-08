@@ -122,21 +122,10 @@ export default function Styling() {
             Background
             <input
               type="color"
-              value={`#${(
-                (1 << 24) +
-                (selected.backgroundColor.red << 16) +
-                (selected.backgroundColor.green << 8) +
-                selected.backgroundColor.blue
-              )
-                .toString(16)
-                .slice(1)}`}
+              value={selected.backgroundColor}
               onChange={(e) => {
                 const hex = e.target.value;
-                update("backgroundColor", {
-                  red: parseInt(hex.slice(1, 3), 16),
-                  green: parseInt(hex.slice(3, 5), 16),
-                  blue: parseInt(hex.slice(5, 7), 16),
-                });
+                update("backgroundColor", hex);
               }}
             />
           </label>
