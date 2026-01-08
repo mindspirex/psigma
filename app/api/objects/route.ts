@@ -52,8 +52,6 @@ export async function POST(req: NextRequest) {
       ...data,
     });
 
-    console.log(data);
-
     return NextResponse.json(
       {
         id: result.insertedId,

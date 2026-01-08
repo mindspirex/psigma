@@ -1,7 +1,7 @@
 import { useObjects, Obj } from "@/utility/ObjectsContext";
 
 export default function AddObject() {
-  const { setObjects } = useObjects();
+  const { setObjects, setSelectedId } = useObjects();
 
   const defaultObj: Obj = {
     id: "temporary id",
@@ -40,6 +40,7 @@ export default function AddObject() {
       };
 
       setObjects((prev) => [...prev, createdObj]);
+      setSelectedId(data.id);
     } catch (error) {
       console.error(error);
     }
