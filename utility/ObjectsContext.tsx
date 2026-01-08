@@ -35,7 +35,7 @@ export function ObjectsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function load() {
-      const res = await fetch("/api/objects");
+      const res = await fetch("/api/object");
       const data = await res.json();
       setObjects(data);
     }
