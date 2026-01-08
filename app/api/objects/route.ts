@@ -19,8 +19,7 @@ export async function GET() {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { obj } = body;
-    const { id, ...data } = obj;
+    const { id, ...data } = body;
 
     const client = await clientPromise;
     const db = client.db("psigma");

@@ -20,7 +20,7 @@ export default function Styling() {
           await fetch("/api/objects", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ obj: updated }),
+            body: JSON.stringify({ ...updated }),
           });
         } catch (err) {
           console.error("Failed to PATCH object:", err);
