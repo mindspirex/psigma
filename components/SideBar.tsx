@@ -6,7 +6,7 @@ import AddObject from "@/components/AddObject";
 export default function Sidebar() {
   return (
     <aside
-      className={`
+      className={`flex flex-col gap-5
         absolute top-0 h-full w-80
         bg-foreground text-white p-5 z-10 right-0
       `}
