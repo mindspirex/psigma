@@ -4,7 +4,7 @@ import { useObjects, Obj } from "@/utility/ObjectsContext";
 import usePatchObject from "@/utility/usePatchObject";
 
 export default function Styling() {
-  const { objects, selectedId } = useObjects();
+  const { objects, selectedId, setObjects, setSelectedId } = useObjects();
   const patchObject = usePatchObject();
 
   function update<K extends keyof Obj>(key: K, value: Obj[K]) {
@@ -12,7 +12,31 @@ export default function Styling() {
     patchObject(selectedId, { [key]: value });
   }
 
-  async function deleteObject() {}
+  async function deleteObject() {
+    try {
+      const res = await fetch("/api/object", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: selectedId }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to delete object");
+      }
+
+      setObjects((prevObject) =>
+        prevObject.filter((object) => object.id !== selectedId),
+      );
+      setSelectedId(null);
+
+      console.log("Deleted successfully:");
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  }
 
   const selectedObject = objects.find((o) => o.id === selectedId);
 
@@ -180,6 +204,15 @@ export default function Styling() {
               className="h-8 w-10 cursor-pointer rounded border border-white/30 bg-transparent"
             />
           </div>
+        </section>
+
+        <section>
+          <button
+            onClick={deleteObject}
+            className="w-full bg-red-500 rounded-full py-2"
+          >
+            Delete Object
+          </button>
         </section>
       </div>
     </div>
