@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useObjects } from "@/utility/ObjectsContext";
 import type React from "react";
+import usePatchObject from "@/utility/usePatchObject";
 
 export function useDrag(initialX: number, initialY: number, id: string) {
-  const { selectedId, setSelectedId, setObjects } = useObjects();
+  const { selectedId, setSelectedId } = useObjects();
+  const patchObject = usePatchObject();
 
   const [pos, setPos] = useState({ x: initialX, y: initialY });
 
@@ -43,27 +45,10 @@ export function useDrag(initialX: number, initialY: number, id: string) {
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onUp);
 
-      await fetch("/api/objects", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: id,
-          x: startPos.x + (e.clientX - startCursor.x),
-          y: startPos.y + (e.clientY - startCursor.y),
-        }),
-      });
+      const updatedX = startPos.x + (e.clientX - startCursor.x);
+      const updatedY = startPos.y + (e.clientY - startCursor.y);
 
-      setObjects((prevObjects) =>
-        prevObjects.map((obj) =>
-          obj.id === id
-            ? {
-                ...obj,
-                x: startPos.x + (e.clientX - startCursor.x),
-                y: startPos.y + (e.clientY - startCursor.y),
-              }
-            : obj,
-        ),
-      );
+      await patchObject(id, { x: updatedX, y: updatedY });
     };
 
     document.addEventListener("mousemove", onMove);

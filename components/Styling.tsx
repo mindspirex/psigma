@@ -1,34 +1,17 @@
 "use client";
 
 import { useObjects, Obj } from "@/utility/ObjectsContext";
+import usePatchObject from "@/utility/usePatchObject";
 
 export default function Styling() {
-  const { objects, setObjects, selectedId } = useObjects();
+  const { objects, selectedId } = useObjects();
+  const patchObject = usePatchObject();
+
   const selected = objects.find((o) => o.id === selectedId);
 
   function update<K extends keyof Obj>(key: K, value: Obj[K]) {
-    setObjects((prev) => {
-      const i = prev.findIndex((o) => o.id === selectedId);
-      if (i === -1) return prev;
-
-      const copy = [...prev];
-      const updated = { ...copy[i], [key]: value };
-      copy[i] = updated;
-
-      (async () => {
-        try {
-          await fetch("/api/objects", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...updated }),
-          });
-        } catch (err) {
-          console.error("Failed to PATCH object:", err);
-        }
-      })();
-
-      return copy;
-    });
+    if (!selectedId) return;
+    patchObject(selectedId, { [key]: value });
   }
 
   if (!selected) {
