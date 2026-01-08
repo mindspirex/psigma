@@ -47,7 +47,21 @@ export default function AddObject() {
 
   return (
     <div>
-      <button className="w-10 h-10 bg-blue-500" onClick={clickHandler} />
+      <button
+        onClick={clickHandler}
+        className="
+          flex items-center justify-center
+          w-full h-12 rounded-full
+          bg-blue-600 text-white
+          shadow-md
+          hover:bg-blue-700 hover:shadow-lg
+          active:scale-95
+          focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
+          transition-all duration-200
+        "
+      >
+        Add Object
+      </button>
     </div>
   );
 }
