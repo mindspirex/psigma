@@ -20,7 +20,7 @@ export default function AddObject() {
 
   async function clickHandler() {
     try {
-      const res = await fetch("/api/objects", {
+      const res = await fetch("/api/object", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

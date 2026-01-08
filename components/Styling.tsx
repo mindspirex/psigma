@@ -12,6 +12,8 @@ export default function Styling() {
     patchObject(selectedId, { [key]: value });
   }
 
+  async function deleteObject() {}
+
   const selectedObject = objects.find((o) => o.id === selectedId);
 
   if (!selectedObject) {

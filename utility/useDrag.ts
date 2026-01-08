@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useObjects } from "@/utility/ObjectsContext";
 import type React from "react";
 import usePatchObject from "@/utility/usePatchObject";
