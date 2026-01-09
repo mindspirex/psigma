@@ -33,11 +33,8 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
   /* ---------- deselect ---------- */
   useEffect(() => {
-    const globalClickHandler = (e: MouseEvent) => {
-      const canvas = document.querySelector(".canvas");
-      if (canvas && e.target === canvas) {
-        setSelectedId(null);
-      }
+    const globalClickHandler = () => {
+      setSelectedId(null);
     };
 
     document.addEventListener("mousedown", globalClickHandler);
