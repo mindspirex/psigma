@@ -1,4 +1,4 @@
-import { useObjects, Obj } from "@/utility/ObjectsContext";
+import { useObjects, Obj } from "@/utility/useObjects";
 
 export default function AddObject() {
   const { setObjects, setSelectedId } = useObjects();

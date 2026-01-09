@@ -1,4 +1,4 @@
-import { useObjects } from "./ObjectsContext";
+import { useObjects } from "@/utility/useObjects";
 
 export default function usePatchObject() {
   const { setObjects } = useObjects();

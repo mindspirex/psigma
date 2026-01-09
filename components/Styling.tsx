@@ -1,6 +1,6 @@
 "use client";
 
-import { useObjects, Obj } from "@/utility/ObjectsContext";
+import { useObjects, Obj } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 
 export default function Styling() {

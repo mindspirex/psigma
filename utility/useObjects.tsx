@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
+/* ---------- Types ---------- */
 export type Obj = {
   id: string;
   x: number;
@@ -25,10 +26,12 @@ type ObjectsContextValue = {
   setSelectedId: (id: string | null) => void;
 };
 
+/* ---------- Context ---------- */
 const ObjectsContext = createContext<ObjectsContextValue | undefined>(
   undefined,
 );
 
+/* ---------- Provider ---------- */
 export function ObjectsProvider({ children }: { children: React.ReactNode }) {
   const [objects, setObjects] = useState<Obj[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -52,7 +55,7 @@ export function ObjectsProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// helper hook so consumers are clean
+/* ---------- Hook ---------- */
 export function useObjects() {
   const ctx = useContext(ObjectsContext);
   if (!ctx) throw new Error("useObjects must be used inside ObjectsProvider");
