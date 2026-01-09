@@ -42,7 +42,9 @@ export default function Styling() {
 
   if (!selectedObject) {
     return (
-      <div className="p-4 text-sm text-white/60">Select an object to edit</div>
+      <div className="text-sm m-auto text-white/60">
+        Select an object to edit
+      </div>
     );
   }
 

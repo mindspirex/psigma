@@ -5,8 +5,8 @@ export default function AddObject() {
 
   const defaultObj: Obj = {
     id: "temporary id",
-    x: 0,
-    y: 0,
+    x: 100,
+    y: 100,
     width: 100,
     height: 100,
     backgroundColor: "#ff0000",

@@ -7,7 +7,7 @@ export default function Canvas() {
   const { objects } = useObjects();
 
   return (
-    <div className="canvas h-screen">
+    <div className="h-screen">
       {objects.map((o) => (
         <RenderObject key={o.id} obj={o} />
       ))}

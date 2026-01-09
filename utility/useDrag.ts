@@ -24,27 +24,12 @@ export function useDrag(initialX: number, initialY: number, id: string) {
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const posRef = useRef(pos);
 
-  // update ref AFTER render
   useEffect(() => {
     posRef.current = pos;
   }, [pos]);
 
   const selected = selectedId === id;
 
-  /* ---------- deselect ---------- */
-  useEffect(() => {
-    const globalClickHandler = (e: MouseEvent) => {
-      const canvas = document.querySelector(".canvas");
-      if (canvas && e.target === canvas) {
-        setSelectedId(null);
-      }
-    };
-
-    document.addEventListener("mousedown", globalClickHandler);
-    return () => document.removeEventListener("mousedown", globalClickHandler);
-  }, [setSelectedId]);
-
-  /* ---------- drag ---------- */
   const startDragging = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
@@ -58,7 +43,6 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
     const onMove = (e: MouseEvent) => {
       const cursor = screenToWorld(e, scale, offset);
-
       setPos({
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
