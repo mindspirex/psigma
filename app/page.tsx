@@ -12,23 +12,37 @@ function CameraViewport() {
 
   return (
     <div className="relative flex-1 overflow-hidden" {...camera.bind}>
-      {/* WORLD */}
       <div
         className="absolute top-0 left-0"
         style={{
           transform: camera.transform,
           transformOrigin: "0 0",
-          width: 5000,
-          height: 5000,
         }}
       >
         <Canvas />
       </div>
 
       {/* ZOOM CONTROLS (UI layer, not scaled) */}
-      <div className="absolute bottom-4 right-4 text-white z-50 flex gap-2">
-        <button onClick={camera.zoomIn}>+</button>
-        <button onClick={camera.zoomOut}>−</button>
+      <div className="absolute bottom-4 right-4 z-50 flex gap-2">
+        <button
+          onClick={camera.zoomIn}
+          className="w-10 h-10 flex items-center justify-center rounded-full
+                     bg-white/20 backdrop-blur-md text-white text-xl font-semibold
+                     border border-white/30 shadow-lg
+                     hover:bg-white/30 active:scale-95 transition"
+        >
+          +
+        </button>
+
+        <button
+          onClick={camera.zoomOut}
+          className="w-10 h-10 flex items-center justify-center rounded-full
+                     bg-white/20 backdrop-blur-md text-white text-xl font-semibold
+                     border border-white/30 shadow-lg
+                     hover:bg-white/30 active:scale-95 transition"
+        >
+          −
+        </button>
       </div>
     </div>
   );
