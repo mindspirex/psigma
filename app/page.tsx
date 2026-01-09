@@ -12,14 +12,11 @@ function CameraViewport() {
 
   return (
     <div className="relative flex-1 overflow-hidden" {...camera.bind}>
-      {/* WORLD */}
       <div
         className="absolute top-0 left-0"
         style={{
           transform: camera.transform,
           transformOrigin: "0 0",
-          width: 5000,
-          height: 5000,
         }}
       >
         <Canvas />
