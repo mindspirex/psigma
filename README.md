@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Psigma
+
+Psigma is an interactive, browser-based design tool inspired by Figma. It enables users to create, manipulate, and organize resizable, draggable objects on a canvas. With custom styling capabilities and a zoomable viewport, Psigma is perfect for designing layouts, prototyping ideas, and experimenting with object-based designs.
+
+## Key Features
+
+- **Interactive Canvas**: Drag, resize, and manipulate objects directly on the canvas.
+- **Customizable Objects**: Modify object properties such as position, size, and background color.
+- **Flex Layouts**: Enable flex properties (justify-content, align-items) for responsive object design.
+- **Zoom & Pan**: Navigate the canvas easily with zoom-in, zoom-out, and panning controls.
+- **Real-Time Updates**: Instant updates to the design as you edit.
+- **Object Nesting**: Structure objects hierarchically to build complex layouts.
+- **Persistent Storage**: Objects and their properties are saved using MongoDB.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Node.js**: A JavaScript runtime for executing server-side scripts. Latest LTS recommended.
+- **MongoDB**: A database service for storing and retrieving objects.
+- **Package Manager**: npm, yarn, or bun.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone https://github.com/mindspirex/psigma.git
+   cd psigma
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up the environment:
+   - Create a `.env.local` file in the root directory.
+   - Add the following:
+     ```plaintext
+     MONGODB_URI=your_mongo_connection_string
+     ```
+     Replace `your_mongo_connection_string` with the URI to your MongoDB instance.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Run the development server:
 
-## Deploy on Vercel
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Open [http://localhost:3000](http://localhost:3000) to access the app.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Future Roadmap
+
+- Support for multiple pages.
+- Real-time collaboration features.
+- Component libraries for reusable objects.
+- Undo/Redo functionality for error recovery.
+- Export designs as images or code.
+
+---
