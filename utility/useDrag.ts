@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useObjects } from "@/utility/ObjectsContext";
+import { useObjects } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 import { useCameraContext } from "@/utility/useCamera";
 import type React from "react";

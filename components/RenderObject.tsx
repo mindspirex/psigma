@@ -1,6 +1,6 @@
 "use client";
 
-import { Obj, useObjects } from "@/utility/ObjectsContext";
+import { Obj, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 
 export default function RenderObject({ obj }: { obj: Obj }) {

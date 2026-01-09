@@ -2,7 +2,7 @@
 
 import SideBar from "@/components/SideBar";
 import Canvas from "@/components/Canvas";
-import { ObjectsProvider } from "@/utility/ObjectsContext";
+import { ObjectsProvider } from "@/utility/useObjects";
 import { CameraProvider, useCameraContext } from "@/utility/useCamera";
 
 /* ---------------- Camera Viewport ---------------- */
