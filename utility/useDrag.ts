@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useObjects } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
-import { useCameraContext } from "@/utility/useCamera";
+import { useZoom } from "@/utility/useZoom";
 import type React from "react";
 
 /* ---------- helpers ---------- */
@@ -19,7 +19,11 @@ function screenToWorld(
 export function useDrag(initialX: number, initialY: number, id: string) {
   const { selectedId, setSelectedId } = useObjects();
   const patchObject = usePatchObject();
-  const { scale, offset } = useCameraContext();
+
+  const { scale } = useZoom();
+
+  // No panning yet
+  const offset = { x: 0, y: 0 };
 
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const posRef = useRef(pos);
@@ -43,6 +47,7 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
     const onMove = (e: MouseEvent) => {
       const cursor = screenToWorld(e, scale, offset);
+
       setPos({
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
@@ -65,5 +70,10 @@ export function useDrag(initialX: number, initialY: number, id: string) {
     document.addEventListener("mouseup", onUp);
   };
 
-  return { ...pos, selected, startDragging };
+  return {
+    x: pos.x,
+    y: pos.y,
+    selected,
+    startDragging,
+  };
 }

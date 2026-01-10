@@ -14,7 +14,7 @@
   box-sizing: border-box;
 }
 
-/* Hide scrollbar for all elements */
+/* hide scrollbar for all elements */
 * {
   -ms-overflow-style: none; /* IE & Edge */
   scrollbar-width: none; /* Firefox */
