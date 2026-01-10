@@ -2,28 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useObjects } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 import { useZoom } from "@/utility/useZoom";
-import type React from "react";
-
-/* ---------- helpers ---------- */
-function screenToWorld(
-  e: MouseEvent | React.MouseEvent,
-  scale: number,
-  offset: { x: number; y: number },
-) {
-  return {
-    x: (e.clientX - offset.x) / scale,
-    y: (e.clientY - offset.y) / scale,
-  };
-}
 
 export function useDrag(initialX: number, initialY: number, id: string) {
   const { selectedId, setSelectedId } = useObjects();
   const patchObject = usePatchObject();
-
   const { scale } = useZoom();
-
-  // No panning yet
-  const offset = { x: 0, y: 0 };
 
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const posRef = useRef(pos);
@@ -42,11 +25,18 @@ export function useDrag(initialX: number, initialY: number, id: string) {
       return;
     }
 
-    const startCursor = screenToWorld(e, scale, offset);
+    const startCursor = {
+      x: e.clientX / scale,
+      y: e.clientY / scale,
+    };
+
     const startPos = { ...posRef.current };
 
     const onMove = (e: MouseEvent) => {
-      const cursor = screenToWorld(e, scale, offset);
+      const cursor = {
+        x: e.clientX / scale,
+        y: e.clientY / scale,
+      };
 
       setPos({
         x: startPos.x + (cursor.x - startCursor.x),
@@ -58,7 +48,10 @@ export function useDrag(initialX: number, initialY: number, id: string) {
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onUp);
 
-      const cursor = screenToWorld(e, scale, offset);
+      const cursor = {
+        x: e.clientX / scale,
+        y: e.clientY / scale,
+      };
 
       await patchObject(id, {
         x: startPos.x + (cursor.x - startCursor.x),
