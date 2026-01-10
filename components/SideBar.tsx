@@ -4,6 +4,7 @@ import Styling from "@/components/Styling";
 import AddObject from "@/components/AddObject";
 import { useDeselect } from "@/utility/useDeselect";
 import { useRef } from "react";
+import ZoomControls from "@/components/ZoomControls";
 
 export default function Sidebar() {
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,7 @@ export default function Sidebar() {
     >
       <AddObject />
       <Styling />
+      <ZoomControls />
     </div>
   );
 }
