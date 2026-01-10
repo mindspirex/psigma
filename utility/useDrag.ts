@@ -2,28 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { useObjects } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 import { useZoom } from "@/utility/useZoom";
-import type React from "react";
+import { snapToObjects } from "@/utility/snapToObjects";
 
-/* ---------- helpers ---------- */
-function screenToWorld(
-  e: MouseEvent | React.MouseEvent,
-  scale: number,
-  offset: { x: number; y: number },
+export function useDrag(
+  initialX: number,
+  initialY: number,
+  width: number,
+  height: number,
+  id: string,
 ) {
-  return {
-    x: (e.clientX - offset.x) / scale,
-    y: (e.clientY - offset.y) / scale,
-  };
-}
-
-export function useDrag(initialX: number, initialY: number, id: string) {
-  const { selectedId, setSelectedId } = useObjects();
+  const { selectedId, setSelectedId, objects } = useObjects();
   const patchObject = usePatchObject();
-
   const { scale } = useZoom();
-
-  // No panning yet
-  const offset = { x: 0, y: 0 };
 
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const posRef = useRef(pos);
@@ -42,28 +32,56 @@ export function useDrag(initialX: number, initialY: number, id: string) {
       return;
     }
 
-    const startCursor = screenToWorld(e, scale, offset);
+    const startCursor = {
+      x: e.clientX / scale,
+      y: e.clientY / scale,
+    };
+
     const startPos = { ...posRef.current };
 
-    const onMove = (e: MouseEvent) => {
-      const cursor = screenToWorld(e, scale, offset);
+    const otherObjects = objects.filter((o) => o.id !== id);
 
-      setPos({
+    const onMove = (e: MouseEvent) => {
+      const cursor = {
+        x: e.clientX / scale,
+        y: e.clientY / scale,
+      };
+
+      const nextPos = {
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
-      });
+      };
+
+      const snapped = snapToObjects(
+        nextPos,
+        { width, height }, // size of dragged object
+        otherObjects,
+      );
+
+      setPos(snapped);
     };
 
     const onUp = async (e: MouseEvent) => {
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onUp);
 
-      const cursor = screenToWorld(e, scale, offset);
+      const cursor = {
+        x: e.clientX / scale,
+        y: e.clientY / scale,
+      };
 
-      await patchObject(id, {
+      const nextPos = {
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
-      });
+      };
+
+      const snapped = snapToObjects(
+        nextPos,
+        { width, height }, // size of dragged object
+        otherObjects,
+      );
+
+      await patchObject(id, snapped);
     };
 
     document.addEventListener("mousemove", onMove);

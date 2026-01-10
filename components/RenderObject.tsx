@@ -6,7 +6,13 @@ import { useDrag } from "@/utility/useDrag";
 export default function RenderObject({ obj }: { obj: Obj }) {
   const { setSelectedId } = useObjects();
 
-  const { x, y, selected, startDragging } = useDrag(obj.x, obj.y, obj.id);
+  const { x, y, selected, startDragging } = useDrag(
+    obj.x,
+    obj.y,
+    obj.width,
+    obj.height,
+    obj.id,
+  );
 
   const style: React.CSSProperties = {
     position: "absolute",
