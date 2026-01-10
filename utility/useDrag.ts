@@ -2,9 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import { useObjects } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 import { useZoom } from "@/utility/useZoom";
+import { snapToObjects } from "@/utility/snapToObjects";
 
-export function useDrag(initialX: number, initialY: number, id: string) {
-  const { selectedId, setSelectedId } = useObjects();
+export function useDrag(
+  initialX: number,
+  initialY: number,
+  width: number,
+  height: number,
+  id: string,
+) {
+  const { selectedId, setSelectedId, objects } = useObjects();
   const patchObject = usePatchObject();
   const { scale } = useZoom();
 
@@ -32,16 +39,26 @@ export function useDrag(initialX: number, initialY: number, id: string) {
 
     const startPos = { ...posRef.current };
 
+    const otherObjects = objects.filter((o) => o.id !== id);
+
     const onMove = (e: MouseEvent) => {
       const cursor = {
         x: e.clientX / scale,
         y: e.clientY / scale,
       };
 
-      setPos({
+      const nextPos = {
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
-      });
+      };
+
+      const snapped = snapToObjects(
+        nextPos,
+        { width, height }, // size of dragged object
+        otherObjects,
+      );
+
+      setPos(snapped);
     };
 
     const onUp = async (e: MouseEvent) => {
@@ -53,10 +70,18 @@ export function useDrag(initialX: number, initialY: number, id: string) {
         y: e.clientY / scale,
       };
 
-      await patchObject(id, {
+      const nextPos = {
         x: startPos.x + (cursor.x - startCursor.x),
         y: startPos.y + (cursor.y - startCursor.y),
-      });
+      };
+
+      const snapped = snapToObjects(
+        nextPos,
+        { width, height }, // size of dragged object
+        otherObjects,
+      );
+
+      await patchObject(id, snapped);
     };
 
     document.addEventListener("mousemove", onMove);
