@@ -2,6 +2,7 @@
 
 import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
+import { usePatchObject } from "@/utility/usePatchObject";
 
 export default function RenderObject({
   object,
@@ -11,8 +12,7 @@ export default function RenderObject({
   isParentFlex: boolean;
 }) {
   const { setSelectedId, objects, selectedId } = useObjects();
-
-  const selected = selectedId === object.id;
+  const patchObject = usePatchObject();
 
   const { x, y, startDragging } = useDrag(
     object.x,
@@ -21,6 +21,8 @@ export default function RenderObject({
     object.height,
     object.id,
   );
+
+  const selected = selectedId === object.id;
 
   const style: React.CSSProperties = {
     position: isParentFlex ? "static" : "absolute",

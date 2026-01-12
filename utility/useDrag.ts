@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useObjects } from "@/utility/useObjects";
-import usePatchObject from "@/utility/usePatchObject";
+import { usePatchObject } from "@/utility/usePatchObject";
 import { useZoom } from "@/utility/useZoom";
 import { snapToObjects } from "@/utility/snapToObjects";
 
