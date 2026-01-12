@@ -27,7 +27,7 @@ export default function usePatchObject() {
 
     setObjects((prevObjects) =>
       prevObjects.map((object) =>
-        object.id === id ? { ...object, ...sanitizedFields } : obj,
+        object.id === id ? { ...object, ...sanitizedFields } : object,
       ),
     );
   };
