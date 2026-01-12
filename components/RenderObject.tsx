@@ -35,7 +35,9 @@ export default function RenderObject({ object }: { object: Object }) {
       onMouseDown={startDragging}
       onClick={() => setSelectedId(object.id)}
     >
-      Children Here
+      {object.children.map((childId) => {
+        return childId;
+      })}
     </div>
   );
 }

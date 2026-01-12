@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 /* ---------- Types ---------- */
 export type Object = {
   id: string;
-  layer: number;
+  isTopLayerElement: boolean;
 
   x: number;
   y: number;
