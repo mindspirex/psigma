@@ -4,7 +4,7 @@ import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 
 export default function RenderObject({ object }: { object: Object }) {
-  const { setSelectedId } = useObjects();
+  const { setSelectedId, objects } = useObjects();
 
   const { x, y, selected, startDragging } = useDrag(
     object.x,
@@ -36,7 +36,9 @@ export default function RenderObject({ object }: { object: Object }) {
       onClick={() => setSelectedId(object.id)}
     >
       {object.children.map((childId) => {
-        return childId;
+        const obj = objects.find((object) => object.id === childId);
+
+        return obj ? <RenderObject key={childId} object={obj} /> : null;
       })}
     </div>
   );
