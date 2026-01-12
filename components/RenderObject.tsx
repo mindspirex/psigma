@@ -32,12 +32,17 @@ export default function RenderObject({ object }: { object: Object }) {
   return (
     <div
       style={style}
-      onMouseDown={startDragging}
-      onClick={() => setSelectedId(object.id)}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        startDragging(e);
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedId(object.id);
+      }}
     >
       {object.children.map((childId) => {
-        const obj = objects.find((object) => object.id === childId);
-
+        const obj = objects.find((o) => o.id === childId);
         return obj ? <RenderObject key={childId} object={obj} /> : null;
       })}
     </div>
