@@ -21,7 +21,7 @@ export default function RenderObject({
   );
 
   const style: React.CSSProperties = {
-    position: "absolute",
+    position: isParentFlex ? "static" : "absolute",
     left: x,
     top: y,
     width: object.width,
@@ -49,7 +49,13 @@ export default function RenderObject({
     >
       {object.children.map((childId) => {
         const child = objects.find((object) => object.id === childId);
-        return child ? <RenderObject key={childId} object={child} /> : null;
+        return child ? (
+          <RenderObject
+            key={childId}
+            object={child}
+            isParentFlex={object.isFlex}
+          />
+        ) : null;
       })}
     </div>
   );
