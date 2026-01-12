@@ -6,7 +6,7 @@ import { useZoom } from "@/utility/useZoom";
 import { usePan } from "@/utility/usePan";
 
 export default function Canvas() {
-  const { objects, selectedId } = useObjects();
+  const { objects, selectedId, setSelectedId } = useObjects();
   const { scale } = useZoom();
   const panRef = usePan(selectedId);
 
@@ -26,6 +26,12 @@ export default function Canvas() {
           transformOrigin: "0 0",
           width: 5000,
           height: 5000,
+        }}
+        onMouseDown={(e) => {
+          // only deselect when clicking empty canvas
+          if (e.target === e.currentTarget) {
+            setSelectedId(null);
+          }
         }}
       >
         {objects.map((object) => {
