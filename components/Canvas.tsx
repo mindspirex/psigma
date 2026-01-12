@@ -28,9 +28,11 @@ export default function Canvas() {
           height: 5000,
         }}
       >
-        {objects.map((o) => (
-          <RenderObject key={o.id} object={o} />
-        ))}
+        {objects.map((object) => {
+          if (object.layer == 1) {
+            return <RenderObject key={object.id} object={object} />;
+          }
+        })}
       </div>
     </div>
   );
