@@ -91,7 +91,6 @@ export function useDrag(
   return {
     x: pos.x,
     y: pos.y,
-    selected,
     startDragging,
   };
 }

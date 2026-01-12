@@ -10,9 +10,11 @@ export default function RenderObject({
   object: Object;
   isParentFlex: boolean;
 }) {
-  const { setSelectedId, objects } = useObjects();
+  const { setSelectedId, objects, selectedId } = useObjects();
 
-  const { x, y, selected, startDragging } = useDrag(
+  const selected = selectedId === object.id;
+
+  const { x, y, startDragging } = useDrag(
     object.x,
     object.y,
     object.width,
