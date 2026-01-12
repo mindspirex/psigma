@@ -42,8 +42,8 @@ export default function RenderObject({ object }: { object: Object }) {
       }}
     >
       {object.children.map((childId) => {
-        const obj = objects.find((o) => o.id === childId);
-        return obj ? <RenderObject key={childId} object={obj} /> : null;
+        const child = objects.find((object) => object.id === childId);
+        return child ? <RenderObject key={childId} object={child} /> : null;
       })}
     </div>
   );
