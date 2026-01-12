@@ -30,7 +30,13 @@ export default function Canvas() {
       >
         {objects.map((object) => {
           if (object.isTopLayerElement) {
-            return <RenderObject key={object.id} object={object} />;
+            return (
+              <RenderObject
+                key={object.id}
+                object={object}
+                isParentFlex={false}
+              />
+            );
           }
         })}
       </div>

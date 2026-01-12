@@ -3,7 +3,13 @@
 import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 
-export default function RenderObject({ object }: { object: Object }) {
+export default function RenderObject({
+  object,
+  isParentFlex,
+}: {
+  object: Object;
+  isParentFlex: boolean;
+}) {
   const { setSelectedId, objects } = useObjects();
 
   const { x, y, selected, startDragging } = useDrag(
