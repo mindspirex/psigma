@@ -26,8 +26,8 @@ export default function usePatchObject() {
     });
 
     setObjects((prevObjects) =>
-      prevObjects.map((obj) =>
-        obj.id === id ? { ...obj, ...sanitizedFields } : obj,
+      prevObjects.map((object) =>
+        object.id === id ? { ...object, ...sanitizedFields } : object,
       ),
     );
   };

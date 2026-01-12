@@ -1,30 +1,36 @@
 "use client";
 
-import { Obj, useObjects } from "@/utility/useObjects";
+import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 
-export default function RenderObject({ obj }: { obj: Obj }) {
-  const { setSelectedId } = useObjects();
+export default function RenderObject({
+  object,
+  isParentFlex,
+}: {
+  object: Object;
+  isParentFlex: boolean;
+}) {
+  const { setSelectedId, objects } = useObjects();
 
   const { x, y, selected, startDragging } = useDrag(
-    obj.x,
-    obj.y,
-    obj.width,
-    obj.height,
-    obj.id,
+    object.x,
+    object.y,
+    object.width,
+    object.height,
+    object.id,
   );
 
   const style: React.CSSProperties = {
-    position: "absolute",
+    position: isParentFlex ? "static" : "absolute",
     left: x,
     top: y,
-    width: obj.width,
-    height: obj.height,
-    backgroundColor: obj.backgroundColor,
-    display: obj.isFlex ? "flex" : "block",
-    justifyContent: obj.justifyContent,
-    alignItems: obj.alignItems,
-    gap: `${obj.rowGap}px ${obj.columnGap}px`,
+    width: object.width,
+    height: object.height,
+    backgroundColor: object.backgroundColor,
+    display: object.isFlex ? "flex" : "block",
+    justifyContent: object.justifyContent,
+    alignItems: object.alignItems,
+    gap: `${object.rowGap}px ${object.columnGap}px`,
     cursor: selected ? "grab" : "pointer",
     outline: selected ? "2px solid #4c8bf5" : "none",
   };
@@ -32,8 +38,25 @@ export default function RenderObject({ obj }: { obj: Obj }) {
   return (
     <div
       style={style}
-      onMouseDown={startDragging}
-      onClick={() => setSelectedId(obj.id)}
-    />
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        startDragging(e);
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedId(object.id);
+      }}
+    >
+      {object.children.map((childId) => {
+        const child = objects.find((object) => object.id === childId);
+        return child ? (
+          <RenderObject
+            key={childId}
+            object={child}
+            isParentFlex={object.isFlex}
+          />
+        ) : null;
+      })}
+    </div>
   );
 }
