@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 /* ---------- Types ---------- */
-export type Obj = {
+export type Object = {
   id: string;
+  layer: number;
+
   x: number;
   y: number;
   width: number;
@@ -20,8 +22,8 @@ export type Obj = {
 };
 
 type ObjectsContextValue = {
-  objects: Obj[];
-  setObjects: React.Dispatch<React.SetStateAction<Obj[]>>;
+  objects: Object[];
+  setObjects: React.Dispatch<React.SetStateAction<Object[]>>;
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
 };
@@ -33,7 +35,7 @@ const ObjectsContext = createContext<ObjectsContextValue | undefined>(
 
 /* ---------- Provider ---------- */
 export function ObjectsProvider({ children }: { children: React.ReactNode }) {
-  const [objects, setObjects] = useState<Obj[]>([]);
+  const [objects, setObjects] = useState<Object[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {

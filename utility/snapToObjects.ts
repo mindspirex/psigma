@@ -22,7 +22,7 @@ export function snapToObjects(
   let snapX: SnapCandidate | null = null;
   let snapY: SnapCandidate | null = null;
 
-  for (const obj of others) {
+  for (const object of others) {
     // ───────── Edges ─────────
 
     const selfLeft = pos.x;
@@ -30,36 +30,36 @@ export function snapToObjects(
     const selfTop = pos.y;
     const selfBottom = pos.y + self.height;
 
-    const objLeft = obj.x;
-    const objRight = obj.x + obj.width;
-    const objTop = obj.y;
-    const objBottom = obj.y + obj.height;
+    const objectLeft = object.x;
+    const objectRight = object.x + object.width;
+    const objectTop = object.y;
+    const objectBottom = object.y + object.height;
 
     // ───────── X AXIS ─────────
 
     const xCandidates: SnapCandidate[] = [
       // left ↔ right
       {
-        value: objRight,
-        distance: Math.abs(selfLeft - objRight),
+        value: objectRight,
+        distance: Math.abs(selfLeft - objectRight),
       },
 
       // right ↔ left
       {
-        value: objLeft - self.width,
-        distance: Math.abs(selfRight - objLeft),
+        value: objectLeft - self.width,
+        distance: Math.abs(selfRight - objectLeft),
       },
 
       // left ↔ left
       {
-        value: objLeft,
-        distance: Math.abs(selfLeft - objLeft),
+        value: objectLeft,
+        distance: Math.abs(selfLeft - objectLeft),
       },
 
       // right ↔ right
       {
-        value: objRight - self.width,
-        distance: Math.abs(selfRight - objRight),
+        value: objectRight - self.width,
+        distance: Math.abs(selfRight - objectRight),
       },
     ];
 
@@ -74,25 +74,25 @@ export function snapToObjects(
     const yCandidates: SnapCandidate[] = [
       // top ↔ bottom
       {
-        value: objBottom,
-        distance: Math.abs(selfTop - objBottom),
+        value: objectBottom,
+        distance: Math.abs(selfTop - objectBottom),
       },
 
       // bottom ↔ top
       {
-        value: objTop - self.height,
-        distance: Math.abs(selfBottom - objTop),
+        value: objectTop - self.height,
+        distance: Math.abs(selfBottom - objectTop),
       },
 
       // top ↔ top
       {
-        value: objTop,
-        distance: Math.abs(selfTop - objTop),
+        value: objectTop,
+        distance: Math.abs(selfTop - objectTop),
       },
 
       {
-        value: objBottom - self.height,
-        distance: Math.abs(selfBottom - objBottom),
+        value: objectBottom - self.height,
+        distance: Math.abs(selfBottom - objectBottom),
       },
     ];
 

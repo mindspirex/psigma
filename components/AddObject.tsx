@@ -1,14 +1,17 @@
-import { useObjects, Obj } from "@/utility/useObjects";
+import { useObjects, Object } from "@/utility/useObjects";
 
 export default function AddObject() {
   const { setObjects, setSelectedId } = useObjects();
 
-  const defaultObj: Obj = {
+  const defaultObj: Object = {
     id: "temporary id",
+    layer: 1,
+
     x: 100,
     y: 100,
     width: 100,
     height: 100,
+
     backgroundColor: "#ff0000",
     isFlex: false,
     justifyContent: "center",
@@ -34,7 +37,7 @@ export default function AddObject() {
 
       const data: { id: string } = await res.json();
 
-      const createdObj: Obj = {
+      const createdObj: Object = {
         ...defaultObj,
         id: data.id,
       };

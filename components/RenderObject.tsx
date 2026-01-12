@@ -1,30 +1,30 @@
 "use client";
 
-import { Obj, useObjects } from "@/utility/useObjects";
+import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 
-export default function RenderObject({ obj }: { obj: Obj }) {
+export default function RenderObject({ object }: { object: Object }) {
   const { setSelectedId } = useObjects();
 
   const { x, y, selected, startDragging } = useDrag(
-    obj.x,
-    obj.y,
-    obj.width,
-    obj.height,
-    obj.id,
+    object.x,
+    object.y,
+    object.width,
+    object.height,
+    object.id,
   );
 
   const style: React.CSSProperties = {
     position: "absolute",
     left: x,
     top: y,
-    width: obj.width,
-    height: obj.height,
-    backgroundColor: obj.backgroundColor,
-    display: obj.isFlex ? "flex" : "block",
-    justifyContent: obj.justifyContent,
-    alignItems: obj.alignItems,
-    gap: `${obj.rowGap}px ${obj.columnGap}px`,
+    width: object.width,
+    height: object.height,
+    backgroundColor: object.backgroundColor,
+    display: object.isFlex ? "flex" : "block",
+    justifyContent: object.justifyContent,
+    alignItems: object.alignItems,
+    gap: `${object.rowGap}px ${object.columnGap}px`,
     cursor: selected ? "grab" : "pointer",
     outline: selected ? "2px solid #4c8bf5" : "none",
   };
@@ -33,7 +33,7 @@ export default function RenderObject({ obj }: { obj: Obj }) {
     <div
       style={style}
       onMouseDown={startDragging}
-      onClick={() => setSelectedId(obj.id)}
+      onClick={() => setSelectedId(object.id)}
     />
   );
 }

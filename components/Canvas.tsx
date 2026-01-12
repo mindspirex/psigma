@@ -29,7 +29,7 @@ export default function Canvas() {
         }}
       >
         {objects.map((o) => (
-          <RenderObject key={o.id} obj={o} />
+          <RenderObject key={o.id} object={o} />
         ))}
       </div>
     </div>

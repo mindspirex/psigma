@@ -1,13 +1,13 @@
 "use client";
 
-import { useObjects, Obj } from "@/utility/useObjects";
+import { useObjects, Object } from "@/utility/useObjects";
 import usePatchObject from "@/utility/usePatchObject";
 
 export default function Styling() {
   const { objects, selectedId, setObjects, setSelectedId } = useObjects();
   const patchObject = usePatchObject();
 
-  function update<K extends keyof Obj>(key: K, value: Obj[K]) {
+  function update<K extends keyof Object>(key: K, value: Object[K]) {
     if (!selectedId) return;
     patchObject(selectedId, { [key]: value });
   }
