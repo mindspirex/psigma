@@ -27,6 +27,9 @@ export function useDrag(
   const startDragging = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
+    // ignore clicks from children (buttons, handles, etc.)
+    if (e.currentTarget !== e.target) return;
+
     if (!selected) {
       setSelectedId(id);
       return;
@@ -38,7 +41,6 @@ export function useDrag(
     };
 
     const startPos = { ...posRef.current };
-
     const otherObjects = objects.filter((o) => o.id !== id);
 
     const onMove = (e: MouseEvent) => {
@@ -52,13 +54,7 @@ export function useDrag(
         y: startPos.y + (cursor.y - startCursor.y),
       };
 
-      const snapped = snapToObjects(
-        nextPos,
-        { width, height }, // size of dragged object
-        otherObjects,
-      );
-
-      setPos(snapped);
+      setPos(snapToObjects(nextPos, { width, height }, otherObjects));
     };
 
     const onUp = async (e: MouseEvent) => {
@@ -75,13 +71,10 @@ export function useDrag(
         y: startPos.y + (cursor.y - startCursor.y),
       };
 
-      const snapped = snapToObjects(
-        nextPos,
-        { width, height }, // size of dragged object
-        otherObjects,
+      await patchObject(
+        id,
+        snapToObjects(nextPos, { width, height }, otherObjects),
       );
-
-      await patchObject(id, snapped);
     };
 
     document.addEventListener("mousemove", onMove);

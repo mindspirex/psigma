@@ -35,8 +35,11 @@ export default function RenderObject({
     justifyContent: object.justifyContent,
     alignItems: object.alignItems,
     gap: `${object.rowGap}px ${object.columnGap}px`,
-    cursor: selected ? "grab" : "pointer",
-    outline: selected ? "2px solid #4c8bf5" : "none",
+    border: selected ? "2px solid #4c8bf5" : "none",
+  };
+
+  const removeFromParent = (objectId: string) => {
+    patchObject(objectId, { isTopLayerElement: true });
   };
 
   return (
@@ -61,6 +64,18 @@ export default function RenderObject({
           />
         ) : null;
       })}
+
+      {selected && isParentFlex && (
+        <button
+          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          onClick={(e) => {
+            e.stopPropagation();
+            removeFromParent(object.id);
+          }}
+        >
+          Remove From Parent
+        </button>
+      )}
     </div>
   );
 }
