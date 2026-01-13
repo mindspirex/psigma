@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 export type Object = {
   id: string;
   isTopLayerElement: boolean;
+  position: string;
 
   x: number;
   y: number;
