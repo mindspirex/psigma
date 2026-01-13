@@ -34,7 +34,7 @@ export default function RenderObject({
     width: object.width,
     height: object.height,
     backgroundColor: object.backgroundColor,
-    display: object.isFlex ? "flex" : "block",
+    display: "flex",
     justifyContent: object.justifyContent,
     alignItems: object.alignItems,
     rowGap: object.rowGap,
@@ -42,7 +42,7 @@ export default function RenderObject({
     border: selected ? "2px solid #4c8bf5" : "none",
   };
 
-  const removeFromParent = (objectId: string) => {
+  const detachFromParent = (objectId: string) => {
     patchObject(objectId, {
       isTopLayerElement: true,
       x: parent ? parent.x : 0,
@@ -57,6 +57,8 @@ export default function RenderObject({
       });
     }
   };
+
+  const attachToParent = () => {};
 
   return (
     <div
@@ -77,15 +79,27 @@ export default function RenderObject({
         ) : null;
       })}
 
-      {selected && parent?.isFlex && object.position === "static" && (
+      {selected && object.position === "static" && (
         <button
           className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            removeFromParent(object.id);
+            detachFromParent(object.id);
           }}
         >
-          Remove From Parent
+          Detach
+        </button>
+      )}
+
+      {selected && object.position === "absolute" && (
+        <button
+          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          onClick={(e) => {
+            e.stopPropagation();
+            attachToParent(object.id);
+          }}
+        >
+          Attach
         </button>
       )}
     </div>
