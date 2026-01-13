@@ -58,7 +58,46 @@ export default function RenderObject({
     }
   };
 
-  const attachToParent = () => {};
+  const attachToObject = () => {
+    // center point of the dragged object
+    const centerX = x + object.width / 2;
+    const centerY = y + object.height / 2;
+
+    // find all valid drop targets
+    const candidates = objects.filter((target) => {
+      if (target.id === object.id) return false;
+      if (target.position === "absolute") return false;
+
+      const left = target.x;
+      const top = target.y;
+      const right = left + target.width;
+      const bottom = top + target.height;
+
+      return (
+        centerX >= left &&
+        centerX <= right &&
+        centerY >= top &&
+        centerY <= bottom
+      );
+    });
+
+    if (candidates.length === 0) return;
+
+    // choose the smallest containing object (most specific container)
+    const target = candidates.sort(
+      (a, b) => a.width * a.height - b.width * b.height,
+    )[0];
+
+    // attach to new parent
+    patchObject(object.id, {
+      position: "static",
+      isTopLayerElement: false,
+    });
+
+    patchObject(target.id, {
+      children: [...target.children, object.id],
+    });
+  };
 
   return (
     <div
@@ -96,7 +135,7 @@ export default function RenderObject({
           className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            attachToParent(object.id);
+            attachToObject();
           }}
         >
           Attach
