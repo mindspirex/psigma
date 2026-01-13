@@ -1,7 +1,7 @@
 "use client";
 
 import { useObjects, Object } from "@/utility/useObjects";
-import usePatchObject from "@/utility/usePatchObject";
+import { usePatchObject } from "@/utility/usePatchObject";
 
 export default function Styling() {
   const { objects, selectedId, setObjects, setSelectedId } = useObjects();

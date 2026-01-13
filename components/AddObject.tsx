@@ -6,6 +6,7 @@ export default function AddObject() {
   const defaultObj: Object = {
     id: "temporary id",
     isTopLayerElement: true,
+    position: "absolute",
 
     x: 100,
     y: 100,

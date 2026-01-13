@@ -1,6 +1,6 @@
 import { useObjects } from "@/utility/useObjects";
 
-export default function usePatchObject() {
+export function usePatchObject() {
   const { setObjects } = useObjects();
 
   return async function patchObject(
