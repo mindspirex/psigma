@@ -119,7 +119,7 @@ export default function RenderObject({
 
       {selected && object.position === "static" && (
         <button
-          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          className="text-white absolute -top-6 bg-blue-300 rounded-full px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             detachFromParent(object.id);
@@ -131,7 +131,7 @@ export default function RenderObject({
 
       {selected && object.position === "absolute" && (
         <button
-          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          className="text-white absolute -top-6 bg-blue-300 rounded-full px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             attachToObject();
