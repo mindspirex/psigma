@@ -66,7 +66,6 @@ export default function RenderObject({
     // find all valid drop targets
     const candidates = objects.filter((target) => {
       if (target.id === object.id) return false;
-      if (target.position === "absolute") return false;
 
       const left = target.x;
       const top = target.y;
