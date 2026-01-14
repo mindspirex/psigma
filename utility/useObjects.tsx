@@ -13,7 +13,6 @@ export type Object = {
 
   backgroundColor: string;
 
-  isFlex: boolean;
   justifyContent: string;
   alignItems: string;
   rowGap: number;

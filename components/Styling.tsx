@@ -120,75 +120,50 @@ export default function Styling() {
             Layout
           </h3>
 
-          <label className="flex items-center justify-between gap-4 cursor-pointer">
-            <span className="text-white/80 select-none">Flex Layout</span>
+          <div className="mt-3 space-y-2">
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-white/70">Justify Content</span>
+              <select
+                value={selectedObject.justifyContent}
+                onChange={(e) => update("justifyContent", e.target.value)}
+                className="h-8 rounded-md border border-white/20 bg-white/10 px-2 text-white outline-none focus:border-white/40"
+              >
+                {[
+                  "flex-start",
+                  "center",
+                  "flex-end",
+                  "space-between",
+                  "space-around",
+                  "space-evenly",
+                ].map((o) => (
+                  <option key={o} value={o} className="text-black">
+                    {o}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-            <button
-              type="button"
-              onClick={() => update("isFlex", !selectedObject.isFlex)}
-              className={`
-                relative inline-flex h-6 w-11 items-center rounded-full
-                transition-colors duration-200
-                focus:outline-none focus:ring-2 focus:ring-white/40
-                ${selectedObject.isFlex ? "bg-white" : "bg-white/30"}
-              `}
-            >
-              <span
-                className={`
-                  inline-block h-5 w-5 rounded-full bg-black
-                  transition-transform duration-200 ease-out
-                  ${selectedObject.isFlex ? "translate-x-5" : "translate-x-1"}
-                `}
-              />
-            </button>
-          </label>
-
-          {selectedObject.isFlex && (
-            <div className="mt-3 space-y-2">
-              <label className="flex flex-col gap-1">
-                <span className="text-xs text-white/70">Justify Content</span>
-                <select
-                  value={selectedObject.justifyContent}
-                  onChange={(e) => update("justifyContent", e.target.value)}
-                  className="h-8 rounded-md border border-white/20 bg-white/10 px-2 text-white outline-none focus:border-white/40"
-                >
-                  {[
-                    "flex-start",
-                    "center",
-                    "flex-end",
-                    "space-between",
-                    "space-around",
-                    "space-evenly",
-                  ].map((o) => (
-                    <option key={o} value={o} className="text-black">
-                      {o}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="flex flex-col gap-1">
-                <span className="text-xs text-white/70">Align Items</span>
-                <select
-                  value={selectedObject.alignItems}
-                  onChange={(e) => update("alignItems", e.target.value)}
-                  className="h-8 rounded-md border border-white/20 bg-white/10 px-2 text-white outline-none focus:border-white/40"
-                >
-                  {[
-                    "stretch",
-                    "flex-start",
-                    "center",
-                    "flex-end",
-                    "baseline",
-                  ].map((o) => (
-                    <option key={o} value={o} className="text-black">
-                      {o}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          )}
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-white/70">Align Items</span>
+              <select
+                value={selectedObject.alignItems}
+                onChange={(e) => update("alignItems", e.target.value)}
+                className="h-8 rounded-md border border-white/20 bg-white/10 px-2 text-white outline-none focus:border-white/40"
+              >
+                {[
+                  "stretch",
+                  "flex-start",
+                  "center",
+                  "flex-end",
+                  "baseline",
+                ].map((o) => (
+                  <option key={o} value={o} className="text-black">
+                    {o}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </section>
 
         {/* APPEARANCE */}

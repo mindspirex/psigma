@@ -27,22 +27,22 @@ export default function RenderObject({
   const parent = objects.find((object) => object.id === parentId);
 
   const style: React.CSSProperties = {
-    left: x,
-    top: y,
     position: (object.position ??
       "absolute") as React.CSSProperties["position"],
     width: object.width,
     height: object.height,
     backgroundColor: object.backgroundColor,
-    display: object.isFlex ? "flex" : "block",
+    display: "flex",
     justifyContent: object.justifyContent,
     alignItems: object.alignItems,
     rowGap: object.rowGap,
     columnGap: object.columnGap,
     border: selected ? "2px solid #4c8bf5" : "none",
+    left: x,
+    top: y,
   };
 
-  const removeFromParent = (objectId: string) => {
+  const detachFromParent = (objectId: string) => {
     patchObject(objectId, {
       isTopLayerElement: true,
       x: parent ? parent.x : 0,
@@ -56,6 +56,46 @@ export default function RenderObject({
           : [],
       });
     }
+  };
+
+  const attachToObject = () => {
+    // center point of the dragged object
+    const centerX = x + object.width / 2;
+    const centerY = y + object.height / 2;
+
+    // find all valid drop targets
+    const candidates = objects.filter((target) => {
+      if (target.id === object.id) return false;
+
+      const left = target.x;
+      const top = target.y;
+      const right = left + target.width;
+      const bottom = top + target.height;
+
+      return (
+        centerX >= left &&
+        centerX <= right &&
+        centerY >= top &&
+        centerY <= bottom
+      );
+    });
+
+    if (candidates.length === 0) return;
+
+    // choose the smallest containing object (most specific container)
+    const target = candidates.sort(
+      (a, b) => a.width * a.height - b.width * b.height,
+    )[0];
+
+    patchObject(target.id, {
+      children: [...target.children, object.id],
+    });
+
+    // attach to new parent
+    patchObject(object.id, {
+      position: "static",
+      isTopLayerElement: false,
+    });
   };
 
   return (
@@ -77,15 +117,27 @@ export default function RenderObject({
         ) : null;
       })}
 
-      {selected && parent?.isFlex && object.position === "static" && (
+      {selected && object.position === "static" && (
         <button
           className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            removeFromParent(object.id);
+            detachFromParent(object.id);
           }}
         >
-          Remove From Parent
+          Detach
+        </button>
+      )}
+
+      {selected && object.position === "absolute" && (
+        <button
+          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          onClick={(e) => {
+            e.stopPropagation();
+            attachToObject();
+          }}
+        >
+          Attach
         </button>
       )}
     </div>

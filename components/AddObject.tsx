@@ -14,7 +14,6 @@ export default function AddObject() {
     height: 100,
 
     backgroundColor: "#ff0000",
-    isFlex: false,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 0,
