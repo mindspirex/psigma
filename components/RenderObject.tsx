@@ -27,8 +27,6 @@ export default function RenderObject({
   const parent = objects.find((object) => object.id === parentId);
 
   const style: React.CSSProperties = {
-    left: x,
-    top: y,
     position: (object.position ??
       "absolute") as React.CSSProperties["position"],
     width: object.width,
@@ -40,6 +38,8 @@ export default function RenderObject({
     rowGap: object.rowGap,
     columnGap: object.columnGap,
     border: selected ? "2px solid #4c8bf5" : "none",
+    left: x,
+    top: y,
   };
 
   const detachFromParent = (objectId: string) => {
@@ -87,14 +87,14 @@ export default function RenderObject({
       (a, b) => a.width * a.height - b.width * b.height,
     )[0];
 
+    patchObject(target.id, {
+      children: [...target.children, object.id],
+    });
+
     // attach to new parent
     patchObject(object.id, {
       position: "static",
       isTopLayerElement: false,
-    });
-
-    patchObject(target.id, {
-      children: [...target.children, object.id],
     });
   };
 
