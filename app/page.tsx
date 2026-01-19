@@ -32,7 +32,7 @@ export default function PsigmaLanding() {
               <Github className="w-4 h-4" />
               <span className="hidden sm:inline">Github</span>
             </Link>
-            <Link href="https://github.com/minspirex/psigma">
+            <Link href="/login">
               <button className="bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-105 active:scale-95">
                 Get Started
               </button>
@@ -54,7 +54,7 @@ export default function PsigmaLanding() {
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6">
             Design at the speed of <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-blue-600">
               possibility.
             </span>
           </h1>
@@ -65,7 +65,7 @@ export default function PsigmaLanding() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="https://github.com/mindspirex/psigma">
+            <Link href="/auth/login">
               <button className="w-full sm:w-auto px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold text-lg transition-all shadow-lg shadow-purple-200">
                 Start Designing for Free
               </button>
