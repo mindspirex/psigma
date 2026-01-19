@@ -36,7 +36,7 @@ export default function LoginPage() {
         {/* LEFT SIDE: Image Section (Hidden on small screens) */}
         <div className="relative hidden w-1/2 md:block">
           <Image
-            src="/image.jpg"
+            src="/abstract.jpg"
             alt="Abstract background"
             fill
             className="object-cover"
@@ -128,7 +128,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Primary Button (Sign In) */}
             <div>
               <button
                 type="submit"
@@ -140,7 +139,6 @@ export default function LoginPage() {
             </div>
           </form>
 
-          {/* Divider */}
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
@@ -152,22 +150,18 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Secondary Actions */}
           <div className="flex flex-col space-y-6 text-center">
-            {/* UPDATED: Continue without login - Now More Visible */}
-            {/* Changed from outline border to solid dark gray background for prominence */}
-            <button
-              onClick={handleGuestContinue}
+            <Link
+              href="/dashboard"
               className="w-full rounded-lg bg-gray-900 px-4 py-3 text-sm font-bold text-white transition-transform hover:bg-gray-800 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
             >
               Continue without login
-            </button>
+            </Link>
 
-            {/* Sign Up Link */}
             <p className="text-sm text-gray-600">
               Don’t have an account?{" "}
               <Link
-                href="/signup"
+                href="/auth/register"
                 className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors"
               >
                 Sign up now
