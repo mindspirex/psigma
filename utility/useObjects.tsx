@@ -11,12 +11,22 @@ export type Object = {
   width: number;
   height: number;
 
+  margin: number;
+  padding: number;
+
+  borderRadius: number;
+  borderWidth: number;
+  borderColor: string;
+  boxShadow: number;
+
   backgroundColor: string;
 
   justifyContent: string;
   alignItems: string;
   rowGap: number;
   columnGap: number;
+
+  text: string;
 
   children: string[];
 };

@@ -13,11 +13,23 @@ export default function AddObject() {
     width: 100,
     height: 100,
 
-    backgroundColor: "#ff0000",
+    margin: 10,
+    padding: 10,
+
+    borderRadius: 0,
+    borderWidth: 0,
+    borderColor: "#000000",
+    boxShadow: 0,
+
+    backgroundColor: "#FAEBD7",
+
     justifyContent: "center",
     alignItems: "center",
     rowGap: 0,
     columnGap: 0,
+
+    text: "",
+
     children: [],
   };
 

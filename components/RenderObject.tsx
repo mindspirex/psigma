@@ -29,17 +29,27 @@ export default function RenderObject({
   const style: React.CSSProperties = {
     position: (object.position ??
       "absolute") as React.CSSProperties["position"],
+
+    left: x,
+    top: y,
     width: object.width,
     height: object.height,
+
+    margin: object.margin,
+    padding: object.padding,
+
     backgroundColor: object.backgroundColor,
+
     display: "flex",
     justifyContent: object.justifyContent,
     alignItems: object.alignItems,
     rowGap: object.rowGap,
     columnGap: object.columnGap,
-    border: selected ? "2px solid #4c8bf5" : "none",
-    left: x,
-    top: y,
+
+    borderRadius: object.borderRadius,
+    borderWidth: object.borderWidth,
+    borderColor: object.borderColor,
+    outline: selected ? "2px solid #4c8bf5" : "none",
   };
 
   const detachFromParent = (objectId: string) => {
@@ -119,7 +129,7 @@ export default function RenderObject({
 
       {selected && object.position === "static" && (
         <button
-          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          className="text-white absolute -top-6 bg-blue-300 rounded-full px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             detachFromParent(object.id);
@@ -131,7 +141,7 @@ export default function RenderObject({
 
       {selected && object.position === "absolute" && (
         <button
-          className="text-white absolute top-1 bg-blue-300 rounded-full px-0.5 text-xs"
+          className="text-white absolute -top-6 bg-blue-300 rounded-full px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             attachToObject();
