@@ -1,13 +1,12 @@
-import clientPromise from "@/db/mongodb";
+import { ObjectModel } from "@/db/schema";
+import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
-    const client = await clientPromise;
-    const db = client.db("psigma");
+    await dbConnect();
 
-    const objects = await db.collection("objects").find({}).toArray();
+    const objects = await ObjectModel.find().lean();
 
     return NextResponse.json(
       objects.map(({ _id, ...rest }) => ({
@@ -16,29 +15,7 @@ export async function GET() {
       })),
     );
   } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
-  }
-}
-
-export async function PATCH(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { id, ...data } = body;
-
-    const client = await clientPromise;
-    const db = client.db("psigma");
-
-    await db
-      .collection("objects")
-      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: data });
-
-    return NextResponse.json({ Message: "Object updated sucessfully" });
-  } catch (err) {
-    console.error("PATCH /object error:", err);
+    console.error("GET /object error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
@@ -48,23 +25,14 @@ export async function PATCH(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    await dbConnect();
+
     const body = await req.json();
     const { id, ...data } = body;
 
-    const client = await clientPromise;
-    const db = client.db("psigma");
+    const created = await ObjectModel.create(data);
 
-    const result = await db.collection("objects").insertOne({
-      _id: new ObjectId(),
-      ...data,
-    });
-
-    return NextResponse.json(
-      {
-        id: result.insertedId,
-      },
-      { status: 201 },
-    );
+    return NextResponse.json({ id: created._id.toString() }, { status: 201 });
   } catch (err) {
     console.error("POST /object error:", err);
     return NextResponse.json(
@@ -74,27 +42,53 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { id } = body;
+    await dbConnect();
+
+    const { id, ...data } = await req.json();
 
     if (!id) {
       return NextResponse.json({ error: "Missing id" }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("psigma");
+    const updated = await ObjectModel.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true },
+    );
 
-    const result = await db
-      .collection("objects")
-      .deleteOne({ _id: new ObjectId(id) });
-
-    if (result.deletedCount === 0) {
+    if (!updated) {
       return NextResponse.json({ error: "Object not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ message: "Object updated successfully" });
+  } catch (err) {
+    console.error("PATCH /object error:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    await dbConnect();
+
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    }
+
+    const deleted = await ObjectModel.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return NextResponse.json({ error: "Object not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error("DELETE /object error:", err);
     return NextResponse.json(
