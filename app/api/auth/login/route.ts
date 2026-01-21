@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import connectDB from "@/db/mongodb";
 import { UserModel } from "@/db/schema";
 
@@ -17,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).select("+password");
     if (!user) {
       return NextResponse.json(
         { message: "Invalid credentials" },
@@ -33,22 +32,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET!,
-      { expiresIn: "7d" },
-    );
-
+    // ✅ Just return user data (no auth state)
     return NextResponse.json({
       message: "Login successful",
-      token,
       user: {
-        id: user._id,
+        id: user._id.toString(),
         name: user.name,
         email: user.email,
       },
     });
   } catch (error) {
+    console.error("LOGIN_ERROR:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 },

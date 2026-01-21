@@ -15,12 +15,35 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Logging in with:", { email, password });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Invalid email or password");
+      }
+
+      // success
+      router.push("/dashboard");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("Unexpected error occurred");
+      }
+    } finally {
       setIsLoading(false);
-      // router.push('/dashboard');
-    }, 1000);
+    }
   };
 
   const handleGuestContinue = () => {
@@ -151,12 +174,12 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col space-y-6 text-center">
-            <Link
-              href="/dashboard"
+            <button
+              onClick={handleGuestContinue}
               className="w-full rounded-lg bg-gray-900 px-4 py-3 text-sm font-bold text-white transition-transform hover:bg-gray-800 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
             >
               Continue without login
-            </Link>
+            </button>
 
             <p className="text-sm text-gray-600">
               Don’t have an account?{" "}
