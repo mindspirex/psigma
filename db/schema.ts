@@ -19,6 +19,14 @@ const UserSchema = new mongoose.Schema({
 
 export const UserModel = models.users || mongoose.model("users", UserSchema);
 
+const ProjectSchema = new mongoose.Schema({
+  name: String,
+  ownerEmail: String,
+});
+
+export const ProjectModel =
+  models.projects || mongoose.model("projects", ProjectSchema);
+
 const ObjectSchema = new mongoose.Schema({
   isTopLayerElement: {
     type: Boolean,

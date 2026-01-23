@@ -5,7 +5,7 @@ import Canvas from "@/components/Canvas";
 import { ObjectsProvider } from "@/utility/useObjects";
 import { ZoomProvider } from "@/utility/useZoom";
 
-export default function Dashboard() {
+export default function Editor({ workspaceID }: { workspaceID: string }) {
   return (
     <ObjectsProvider>
       <ZoomProvider>

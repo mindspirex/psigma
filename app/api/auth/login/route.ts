@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Just return user data (no auth state)
     return NextResponse.json({
       message: "Login successful",
       user: {

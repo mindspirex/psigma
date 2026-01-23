@@ -34,7 +34,7 @@ export default function LoginPage() {
       }
 
       // success
-      router.push("/dashboard");
+      router.push("/workspace");
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert(error.message);
