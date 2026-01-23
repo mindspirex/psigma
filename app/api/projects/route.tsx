@@ -68,7 +68,7 @@ export async function DELETE(request: NextRequest) {
 
     const deletedProject = await ProjectModel.findOneAndDelete({
       _id: projectId,
-      ownerId: user._id, // ownership check
+      ownerId: user._id,
     });
 
     if (!deletedProject) {

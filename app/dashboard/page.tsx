@@ -68,7 +68,7 @@ export default function Dashboard() {
 
   const deleteProject = async (id: string) => {
     try {
-      const res = await fetch(`/api/projects/${id}`, {
+      const res = await fetch(`/api/projects?id=${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -78,8 +78,8 @@ export default function Dashboard() {
       }
 
       setProjects((p) => p.filter((project) => project._id !== id));
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
