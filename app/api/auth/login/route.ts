@@ -4,8 +4,6 @@ import connectDB from "@/db/mongodb";
 import { UserModel } from "@/db/schema";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 export async function POST(req: NextRequest) {
   // get email, password from body
   const { email, password } = await req.json();
@@ -34,8 +32,8 @@ export async function POST(req: NextRequest) {
   }
 
   // create jwt
-  const secret = JWT_SECRET;
-  if (!secret) {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
     console.error("JWT_SECRET not defined");
     return NextResponse.json(
       { message: "Internal server error" },

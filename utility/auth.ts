@@ -1,0 +1,16 @@
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+export function verifyJWT(token: string) {
+  if (!JWT_SECRET) {
+    console.error("JWT_SECRET does not exist");
+    return;
+  }
+
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch {
+    return null;
+  }
+}
