@@ -1,16 +1,22 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+export interface AuthPayload extends JwtPayload {
+  email: string;
+}
 
-export function verifyJWT(token: string) {
+export async function getAuthPayload(): Promise<AuthPayload> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    throw new Error("UNAUTHORIZED");
+  }
+
+  const JWT_SECRET = process.env.JWT_SECRET;
   if (!JWT_SECRET) {
-    console.error("JWT_SECRET does not exist");
-    return;
+    throw new Error("JWT_SECRET_MISSING");
   }
 
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch {
-    return null;
-  }
+  return jwt.verify(token, JWT_SECRET) as AuthPayload;
 }

@@ -19,8 +19,6 @@ export default function DashboardPage() {
           credentials: "include",
         });
 
-        // console.log(res);
-
         if (!res.ok) {
           console.error("Failed to fetch projects");
           return;
