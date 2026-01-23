@@ -20,8 +20,16 @@ const UserSchema = new mongoose.Schema({
 export const UserModel = models.users || mongoose.model("users", UserSchema);
 
 const ProjectSchema = new mongoose.Schema({
-  name: String,
-  ownerEmail: String,
+  name: {
+    type: String,
+    required: true,
+  },
+
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "users",
+  },
 });
 
 export const ProjectModel =
