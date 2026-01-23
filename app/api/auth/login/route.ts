@@ -2,50 +2,55 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectDB from "@/db/mongodb";
 import { UserModel } from "@/db/schema";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { email, password } = await req.json();
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Email and password are required" },
-        { status: 400 },
-      );
-    }
-
-    await connectDB();
-
-    const user = await UserModel.findOne({ email }).select("+password");
-    if (!user) {
-      return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 401 },
-      );
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 401 },
-      );
-    }
-
-    // ✅ Just return user data (no auth state)
-    return NextResponse.json({
-      message: "Login successful",
-      user: {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-      },
-    });
-  } catch (error) {
-    console.error("LOGIN_ERROR:", error);
+  // get email, password from body
+  const { email, password } = await req.json();
+  if (!email || !password) {
     return NextResponse.json(
-      { message: "Something went wrong" },
+      { message: "Email or password is missing" },
+      { status: 400 },
+    );
+  }
+
+  // fetch user from db
+  await connectDB();
+
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    return NextResponse.json(
+      { message: "User doesn't exist" },
+      { status: 401 },
+    );
+  }
+
+  // verify password
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return NextResponse.json({ message: "Invalid password" }, { status: 401 });
+  }
+
+  // create jwt
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
+    console.error("JWT_SECRET not defined");
+    return NextResponse.json(
+      { message: "Internal server error" },
       { status: 500 },
     );
   }
+  const token = jwt.sign({ email: user.email }, JWT_SECRET, {
+    expiresIn: "15m",
+  });
+
+  // set http only cookie
+  const res = NextResponse.json({ message: "Login successful" });
+  res.cookies.set("access_token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+  });
+  return res;
 }

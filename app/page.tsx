@@ -65,7 +65,7 @@ export default function PsigmaLanding() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/auth/login">
+            <Link href="/login">
               <button className="w-full sm:w-auto px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold text-lg transition-all shadow-lg shadow-purple-200">
                 Start Designing for Free
               </button>
