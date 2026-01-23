@@ -49,3 +49,41 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    // get authenticated user
+    const user = await getAuthUser();
+    await dbConnect();
+
+    const { searchParams } = new URL(request.url);
+    const projectId = searchParams.get("id");
+
+    if (!projectId) {
+      return NextResponse.json(
+        { message: "Project id is required" },
+        { status: 400 },
+      );
+    }
+
+    const deletedProject = await ProjectModel.findOneAndDelete({
+      _id: projectId,
+      ownerId: user._id, // ownership check
+    });
+
+    if (!deletedProject) {
+      return NextResponse.json(
+        { message: "Project not found or unauthorized" },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json(
+      { message: "Project deleted successfully" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+}
