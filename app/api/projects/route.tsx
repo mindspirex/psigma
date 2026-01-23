@@ -10,6 +10,7 @@ interface AuthPayload extends JwtPayload {
 export async function GET() {
   // get jwt from header
   const cookieStore = await cookies();
+  console.log(cookieStore.getAll());
   const token = cookieStore.get("access_token")?.value;
   if (!token) {
     return Response.json({ message: "Unauthorized" }, { status: 401 });

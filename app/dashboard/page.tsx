@@ -1,68 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+interface Project {
+  _id: string;
+  name: string;
+}
+
 export default function DashboardPage() {
-  const [projects, setProjects] = useState<string[]>([]);
-  const [name, setName] = useState("");
+  const [projects, setProjects] = useState<Project[]>([]);
   const router = useRouter();
 
-  const addProject = () => {
-    if (!name.trim()) return;
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/projects", {
+          credentials: "include",
+        });
 
-    setProjects([...projects, name]);
-    setName("");
-  };
+        // console.log(res);
 
-  const deleteProject = (index: number) => {
-    setProjects(projects.filter((_, i) => i !== index));
-  };
+        if (!res.ok) {
+          console.error("Failed to fetch projects");
+          return;
+        }
+
+        const data: Project[] = await res.json();
+        setProjects(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-3xl">
         <h1 className="mb-6 text-3xl font-bold">📁 Dashboard</h1>
 
-        {/* Add Project */}
-        <div className="mb-6 flex gap-2">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Project name"
-            className="flex-1 rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={addProject}
-            className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
-          >
-            Add
-          </button>
-        </div>
-
-        {/* Project List */}
         {projects.length === 0 && (
           <p className="text-gray-500">No projects yet.</p>
         )}
 
         <div className="space-y-3">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
-              key={index}
+              key={project._id}
               className="flex items-center justify-between rounded-lg bg-white p-4 shadow"
             >
-              <span className="font-medium">{project}</span>
+              <span className="font-medium">{project.name}</span>
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => router.push(`/projects/${index}`)}
+                  onClick={() => router.push(`/projects/${project._id}`)}
                   className="rounded-md bg-green-500 px-3 py-1 text-sm text-white hover:bg-green-600"
                 >
                   Open
                 </button>
+
                 <button
-                  onClick={() => deleteProject(index)}
                   className="rounded-md bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600"
+                  disabled
                 >
                   Delete
                 </button>
