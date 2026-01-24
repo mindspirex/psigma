@@ -10,18 +10,20 @@ export async function getAuthUser() {
   const token = cookieStore.get("access_token")?.value;
 
   if (!token) {
-    throw new Error("UNAUTHORIZED");
+    throw new Error();
   }
 
   const JWT_SECRET = process.env.JWT_SECRET;
   if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET_MISSING");
+    throw new Error();
   }
 
+  let decoded: AuthPayload;
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
-    return decoded;
+    decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
   } catch {
-    throw new Error("JWT_VERIFICATION_FAILED");
+    throw new Error();
   }
+
+  return decoded;
 }
