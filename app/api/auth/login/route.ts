@@ -15,13 +15,22 @@ export async function POST(req: NextRequest) {
   }
 
   // fetch user from db
-  await connectDB();
+  let user;
+  try {
+    await connectDB();
+    user = await UserModel.findOne({ email });
+  } catch {
+    return NextResponse.json(
+      { messsage: "db connection failed" },
+      { status: 500 },
+    );
+  }
 
-  const user = await UserModel.findOne({ email });
+  // if user not found
   if (!user) {
     return NextResponse.json(
-      { message: "User doesn't exist" },
-      { status: 401 },
+      { message: "user doesn't exist" },
+      { status: 404 },
     );
   }
 
@@ -40,7 +49,7 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
-  const token = jwt.sign({ email: user.email }, JWT_SECRET, {
+  const token = jwt.sign({ _id: user._id.toString() }, JWT_SECRET, {
     expiresIn: "15m",
   });
 
@@ -52,5 +61,6 @@ export async function POST(req: NextRequest) {
     sameSite: "lax",
     path: "/",
   });
+
   return res;
 }

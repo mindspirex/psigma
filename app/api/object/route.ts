@@ -5,7 +5,7 @@ import { getAuthUser } from "@/utility/auth";
 import { ProjectModel } from "@/db/schema";
 
 export async function GET(request: NextRequest) {
-  // get projectId from URL
+  // get projectId from query parameters
   const projectId = request.nextUrl.searchParams.get("projectId");
   if (!projectId) {
     return NextResponse.json(
@@ -15,13 +15,13 @@ export async function GET(request: NextRequest) {
   }
 
   // authorization
-  const user = await getAuthUser();
+  const userId = await getAuthUser();
   const project = await ProjectModel.findOne({
     _id: projectId,
-    ownerId: user._id,
+    ownerId: userId,
   });
   if (!project) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
   try {
@@ -38,22 +38,24 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("GET /object error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "internal Server Error" },
       { status: 500 },
     );
   }
 }
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
+    // getting projectId from body
+    const body = await req.json();
+    const { projectId } = body;
+
     await dbConnect();
     const created = await ObjectModel.create({
-      projectId: "69739d7568ec84e7f4dab518",
+      projectId: projectId,
     });
 
     const { _id, __v, ...rest } = created._doc;
-
-    console.log(rest);
 
     return NextResponse.json(
       { id: created._id.toString(), ...rest },

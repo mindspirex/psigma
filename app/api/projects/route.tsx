@@ -4,86 +4,123 @@ import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
+  // get authenticated user
+  let userId;
   try {
-    // get user if user if logged in
-    const user = await getAuthUser();
+    userId = await getAuthUser();
+  } catch {
+    return NextResponse.json(
+      { message: "user not authenticated" },
+      { status: 401 },
+    );
+  }
 
+  // getting all projects of the user
+  let projects;
+  try {
     await dbConnect();
 
-    const projects = await ProjectModel.find({
-      ownerId: user._id,
+    projects = await ProjectModel.find({
+      ownerId: userId,
     });
-
-    return Response.json(projects, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  } catch {
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 },
+    );
   }
+
+  return Response.json(projects, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
+  // get authenticated user
+  let userId;
   try {
-    // get user if user is logged in
-    const user = await getAuthUser();
+    userId = await getAuthUser();
+  } catch {
+    return NextResponse.json(
+      { message: "user not authenticated" },
+      { status: 401 },
+    );
+  }
 
+  // retrieve name from body
+  const body = await request.json();
+  if (!body?.name) {
+    return Response.json(
+      { message: "project name is required" },
+      { status: 400 },
+    );
+  }
+  const { name } = body;
+
+  // create project on db
+  let project;
+  try {
     await dbConnect();
 
-    const body = await request.json();
-    const { name } = body;
-
-    if (!name) {
-      return Response.json(
-        { message: "Project name is required" },
-        { status: 400 },
-      );
-    }
-
-    const project = await ProjectModel.create({
+    project = await ProjectModel.create({
       name,
-      ownerId: user._id,
+      ownerId: userId,
     });
-
-    return NextResponse.json(project, { status: 201 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  } catch {
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 },
+    );
   }
+
+  return NextResponse.json(project, { status: 201 });
 }
 
 export async function DELETE(request: NextRequest) {
+  // get authenticated user
+  let userId;
   try {
-    // get authenticated user
-    const user = await getAuthUser();
+    userId = await getAuthUser();
+  } catch {
+    return NextResponse.json(
+      { message: "user not authenticated" },
+      { status: 401 },
+    );
+  }
+
+  // get projectId from params
+  const { searchParams } = new URL(request.url);
+  const projectId = searchParams.get("id");
+  if (!projectId) {
+    return NextResponse.json(
+      { message: "projectId not found" },
+      { status: 400 },
+    );
+  }
+
+  // delete from db
+  try {
     await dbConnect();
-
-    const { searchParams } = new URL(request.url);
-    const projectId = searchParams.get("id");
-
-    if (!projectId) {
-      return NextResponse.json(
-        { message: "Project id is required" },
-        { status: 400 },
-      );
-    }
 
     const deletedProject = await ProjectModel.findOneAndDelete({
       _id: projectId,
-      ownerId: user._id,
+      ownerId: userId,
     });
 
     if (!deletedProject) {
       return NextResponse.json(
-        { message: "Project not found or unauthorized" },
-        { status: 404 },
+        { message: "project not found" },
+        { status: 400 },
       );
     }
-
-    return NextResponse.json(
-      { message: "Project deleted successfully" },
-      { status: 200 },
-    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { message: "count not delete project" },
+      { status: 500 },
+    );
   }
+
+  return NextResponse.json(
+    { message: "Project deleted successfully" },
+    { status: 200 },
+  );
 }

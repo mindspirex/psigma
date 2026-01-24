@@ -39,11 +39,7 @@ Psigma is an interactive, browser-based design tool inspired by Figma. It enable
 
 3. Set up the environment:
    - Create a `.env.local` file in the root directory.
-   - Add the following:
-     ```plaintext
-     MONGODB_URI=your_mongo_connection_string
-     ```
-     Replace `your_mongo_connection_string` with the URI to your MongoDB instance.
+   - Refer to `.env.sample` file for help
 
 4. Run the development server:
 

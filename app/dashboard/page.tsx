@@ -14,27 +14,27 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const fetchProjects = async () => {
-    try {
-      const res = await fetch("/api/projects", {
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        console.error("Failed to fetch projects");
-        return;
-      }
-
-      const data: Project[] = await res.json();
-      setProjects(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  // fetch projects
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    (async () => {
+      try {
+        const res = await fetch("/api/projects", {
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          console.log("failed to fetch projects");
+          router.push("/login");
+          return;
+        }
+
+        const data: Project[] = await res.json();
+        setProjects(data);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [router]);
 
   const addProject = async () => {
     if (!newProjectName.trim()) return;
