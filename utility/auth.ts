@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 export interface AuthPayload extends JwtPayload {
-  userId: string;
+  _id: string;
 }
 
 export async function getAuthUser() {
@@ -25,5 +25,5 @@ export async function getAuthUser() {
     throw new Error();
   }
 
-  return decoded;
+  return decoded._id;
 }

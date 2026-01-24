@@ -5,7 +5,7 @@ import { getAuthUser } from "@/utility/auth";
 import { ProjectModel } from "@/db/schema";
 
 export async function GET(request: NextRequest) {
-  // get projectId from URL
+  // get projectId from query parameters
   const projectId = request.nextUrl.searchParams.get("projectId");
   if (!projectId) {
     return NextResponse.json(
@@ -15,10 +15,10 @@ export async function GET(request: NextRequest) {
   }
 
   // authorization
-  const user = await getAuthUser();
+  const userId = await getAuthUser();
   const project = await ProjectModel.findOne({
     _id: projectId,
-    ownerId: user._id,
+    ownerId: userId,
   });
   if (!project) {
     return NextResponse.json({ error: "user not authorized" }, { status: 403 });

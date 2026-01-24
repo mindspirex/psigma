@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   // get authenticated user
-  let user;
+  let userId;
   try {
-    user = await getAuthUser();
+    userId = await getAuthUser();
   } catch {
     return NextResponse.json(
       { message: "user not authenticated" },
@@ -21,7 +21,7 @@ export async function GET() {
     await dbConnect();
 
     projects = await ProjectModel.find({
-      ownerId: user._id,
+      ownerId: userId,
     });
   } catch {
     return NextResponse.json(
@@ -35,9 +35,9 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   // get authenticated user
-  let user;
+  let userId;
   try {
-    user = await getAuthUser();
+    userId = await getAuthUser();
   } catch {
     return NextResponse.json(
       { message: "user not authenticated" },
@@ -62,10 +62,13 @@ export async function POST(request: NextRequest) {
 
     project = await ProjectModel.create({
       name,
-      ownerId: user._id,
+      ownerId: userId,
     });
   } catch {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json(project, { status: 201 });
@@ -73,9 +76,9 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   // get authenticated user
-  let user;
+  let userId;
   try {
-    user = await getAuthUser();
+    userId = await getAuthUser();
   } catch {
     return NextResponse.json(
       { message: "user not authenticated" },
@@ -99,7 +102,7 @@ export async function DELETE(request: NextRequest) {
 
     const deletedProject = await ProjectModel.findOneAndDelete({
       _id: projectId,
-      ownerId: user._id,
+      ownerId: userId,
     });
 
     if (!deletedProject) {
