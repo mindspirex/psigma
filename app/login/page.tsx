@@ -47,7 +47,6 @@ export default function LoginPage() {
   };
 
   const handleGuestContinue = () => {
-    console.log("Continuing as guest...");
     router.push("/dashboard");
   };
 

@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 /* ---------- Types ---------- */
 export type Object = {
   id: string;
+  projectId: string;
+
   isTopLayerElement: boolean;
   position: string;
 
@@ -44,19 +46,25 @@ const ObjectsContext = createContext<ObjectsContextValue | undefined>(
 );
 
 /* ---------- Provider ---------- */
-export function ObjectsProvider({ children }: { children: React.ReactNode }) {
+export function ObjectsProvider({
+  children,
+  projectId,
+}: {
+  children: React.ReactNode;
+  projectId: string;
+}) {
   const [objects, setObjects] = useState<Object[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
-      const res = await fetch("/api/object");
+      const res = await fetch(`/api/object?projectId=${projectId}`);
       const data = await res.json();
       setObjects(data);
     }
 
     load();
-  }, []);
+  }, [projectId]);
 
   return (
     <ObjectsContext.Provider
