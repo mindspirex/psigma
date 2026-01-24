@@ -61,5 +61,6 @@ export async function POST(req: NextRequest) {
     sameSite: "lax",
     path: "/",
   });
+
   return res;
 }

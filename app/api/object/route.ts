@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     ownerId: user._id,
   });
   if (!project) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
   try {
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("GET /object error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "internal Server Error" },
       { status: 500 },
     );
   }
