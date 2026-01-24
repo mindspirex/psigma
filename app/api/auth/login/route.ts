@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
-  const token = jwt.sign({ email: user.email }, JWT_SECRET, {
+  const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
     expiresIn: "15m",
   });
 

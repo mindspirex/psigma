@@ -44,16 +44,18 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
+    // getting projectId from body
+    const body = await req.json();
+    const { projectId } = body;
+
     await dbConnect();
     const created = await ObjectModel.create({
-      projectId: "69739d7568ec84e7f4dab518",
+      projectId: projectId,
     });
 
     const { _id, __v, ...rest } = created._doc;
-
-    console.log(rest);
 
     return NextResponse.json(
       { id: created._id.toString(), ...rest },

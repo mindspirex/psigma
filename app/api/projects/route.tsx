@@ -4,10 +4,19 @@ import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
+  // get authenticated user
+  let user;
   try {
-    // get user if user if logged in
-    const user = await getAuthUser();
+    // get authenticated user
+    user = await getAuthUser();
+  } catch {
+    return NextResponse.json(
+      { message: "user not authenticated" },
+      { status: 401 },
+    );
+  }
 
+  try {
     await dbConnect();
 
     const projects = await ProjectModel.find({

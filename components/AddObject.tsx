@@ -1,7 +1,12 @@
 import { useObjects, Object } from "@/utility/useObjects";
+import { usePathname } from "next/navigation";
 
 export default function AddObject() {
   const { setObjects, setSelectedId } = useObjects();
+
+  // finding projectId
+  const pathname = usePathname();
+  const projectId = pathname.split("/").pop();
 
   async function clickHandler() {
     try {
@@ -10,6 +15,7 @@ export default function AddObject() {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ projectId: projectId }),
       });
 
       if (!res.ok) {

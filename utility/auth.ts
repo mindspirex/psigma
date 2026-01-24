@@ -1,10 +1,8 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import dbConnect from "@/db/mongodb";
-import { UserModel } from "@/db/schema";
 
 export interface AuthPayload extends JwtPayload {
-  email: string;
+  userId: string;
 }
 
 export async function getAuthUser() {
@@ -20,21 +18,10 @@ export async function getAuthUser() {
     throw new Error("JWT_SECRET_MISSING");
   }
 
-  let decoded: AuthPayload;
-
   try {
-    decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
-  } catch (error) {
-    console.error(error);
-    throw new Error("INVALID_TOKEN");
+    const decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
+    return decoded;
+  } catch {
+    throw new Error("JWT_VERIFICATION_FAILED");
   }
-
-  await dbConnect();
-
-  const user = await UserModel.findOne({ email: decoded.email });
-  if (!user) {
-    throw new Error("USER_NOT_FOUND");
-  }
-
-  return user;
 }
