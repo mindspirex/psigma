@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 /* ---------- Types ---------- */
 export type Object = {
-  id: string;
+  _id: string;
   projectId: string;
 
   isTopLayerElement: boolean;
@@ -37,7 +37,7 @@ type ObjectsContextValue = {
   objects: Object[];
   setObjects: React.Dispatch<React.SetStateAction<Object[]>>;
   selectedId: string | null;
-  setSelectedId: (id: string | null) => void;
+  setSelectedId: (_id: string | null) => void;
 };
 
 /* ---------- Context ---------- */

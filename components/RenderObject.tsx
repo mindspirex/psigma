@@ -20,12 +20,12 @@ export default function RenderObject({
     object.y,
     object.width,
     object.height,
-    object.id,
+    object._id,
   );
 
-  const selected = selectedId === object.id;
+  const selected = selectedId === object._id;
 
-  const parent = objects.find((object) => object.id === parentId);
+  const parent = objects.find((object) => object._id === parentId);
 
   const style: React.CSSProperties = {
     position: (object.position ??
@@ -76,7 +76,7 @@ export default function RenderObject({
 
     // find all valid drop targets
     const candidates = objects.filter((target) => {
-      if (target.id === object.id) return false;
+      if (target._id === object._id) return false;
 
       const left = target.x;
       const top = target.y;
@@ -98,12 +98,12 @@ export default function RenderObject({
       (a, b) => a.width * a.height - b.width * b.height,
     )[0];
 
-    patchObject(target.id, {
-      children: [...target.children, object.id],
+    patchObject(target._id, {
+      children: [...target.children, object._id],
     });
 
     // attach to new parent
-    patchObject(object.id, {
+    patchObject(object._id, {
       position: "static",
       isTopLayerElement: false,
     });
@@ -118,13 +118,13 @@ export default function RenderObject({
       }}
       onClick={(e) => {
         e.stopPropagation();
-        setSelectedId(object.id);
+        setSelectedId(object._id);
       }}
     >
       {object.children.map((childId) => {
-        const child = objects.find((object) => object.id === childId);
+        const child = objects.find((object) => object._id === childId);
         return child ? (
-          <RenderObject key={childId} object={child} parentId={object.id} />
+          <RenderObject key={childId} object={child} parentId={object._id} />
         ) : null;
       })}
 
@@ -133,7 +133,7 @@ export default function RenderObject({
           className="text-white absolute -top-6 bg-blue-300 rounded-full px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            detachFromParent(object.id);
+            detachFromParent(object._id);
           }}
         >
           Detach

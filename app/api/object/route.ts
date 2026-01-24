@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       objects.map(({ _id, ...rest }) => ({
         ...rest,
-        id: _id.toString(),
+        _id: _id.toString(),
       })),
     );
   } catch (error) {
@@ -55,12 +55,9 @@ export async function POST(req: NextRequest) {
       projectId: projectId,
     });
 
-    const { _id, __v, ...rest } = created._doc;
+    const { _id, ...rest } = created._doc;
 
-    return NextResponse.json(
-      { id: created._id.toString(), ...rest },
-      { status: 201 },
-    );
+    return NextResponse.json({ _id: _id.toString(), ...rest }, { status: 201 });
   } catch (err) {
     console.error("POST /object error:", err);
     return NextResponse.json(
@@ -74,14 +71,14 @@ export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
-    const { id, ...data } = await req.json();
+    const { _id, ...data } = await req.json();
 
-    if (!id) {
+    if (!_id) {
       return NextResponse.json({ error: "Missing id" }, { status: 400 });
     }
 
     const updated = await ObjectModel.findByIdAndUpdate(
-      id,
+      _id,
       { $set: data },
       { new: true },
     );
@@ -104,13 +101,13 @@ export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
-    const { id } = await req.json();
+    const { _id } = await req.json();
 
-    if (!id) {
+    if (!_id) {
       return NextResponse.json({ error: "Missing id" }, { status: 400 });
     }
 
-    const deleted = await ObjectModel.findByIdAndDelete(id);
+    const deleted = await ObjectModel.findByIdAndDelete(_id);
 
     if (!deleted) {
       return NextResponse.json({ error: "Object not found" }, { status: 404 });

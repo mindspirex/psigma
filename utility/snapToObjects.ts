@@ -1,7 +1,7 @@
 export type Point = { x: number; y: number };
 
 type SnapObject = {
-  id: string;
+  _id: string;
   x: number;
   y: number;
   width: number;
