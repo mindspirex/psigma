@@ -36,10 +36,13 @@ export const ProjectModel =
   models.projects || mongoose.model("projects", ProjectSchema);
 
 const ObjectSchema = new mongoose.Schema({
+  projectId: {
+    type: String,
+  },
+
   isTopLayerElement: {
     type: Boolean,
-    required: true,
-    default: false,
+    default: true,
   },
 
   position: {
@@ -61,7 +64,7 @@ const ObjectSchema = new mongoose.Schema({
   borderColor: { type: String, default: "#000000" },
 
   boxShadow: { type: Number, default: 0 },
-  backgroundColor: { type: String, default: "transparent" },
+  backgroundColor: { type: String, default: "#00ff00" },
 
   justifyContent: {
     type: String,
@@ -87,12 +90,10 @@ const ObjectSchema = new mongoose.Schema({
 
   text: { type: String, default: "" },
 
-  children: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Object",
-    },
-  ],
+  children: {
+    type: [String],
+    default: [],
+  },
 });
 
 export const ObjectModel =

@@ -1,12 +1,33 @@
 import { ObjectModel } from "@/db/schema";
 import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
+import { getAuthUser } from "@/utility/auth";
+import { ProjectModel } from "@/db/schema";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // get projectId from URL
+  const projectId = request.nextUrl.searchParams.get("projectId");
+  if (!projectId) {
+    return NextResponse.json(
+      { error: "projectId is required" },
+      { status: 400 },
+    );
+  }
+
+  // authorization
+  const user = await getAuthUser();
+  const project = await ProjectModel.findOne({
+    _id: projectId,
+    ownerId: user._id,
+  });
+  if (!project) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   try {
     await dbConnect();
 
-    const objects = await ObjectModel.find().lean();
+    const objects = await ObjectModel.find({ projectId }).lean();
 
     return NextResponse.json(
       objects.map(({ _id, ...rest }) => ({
@@ -14,8 +35,8 @@ export async function GET() {
         id: _id.toString(),
       })),
     );
-  } catch (err) {
-    console.error("GET /object error:", err);
+  } catch (error) {
+    console.error("GET /object error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
@@ -23,16 +44,21 @@ export async function GET() {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     await dbConnect();
+    const created = await ObjectModel.create({
+      projectId: "69739d7568ec84e7f4dab518",
+    });
 
-    const body = await req.json();
-    const { id, ...data } = body;
+    const { _id, __v, ...rest } = created._doc;
 
-    const created = await ObjectModel.create(data);
+    console.log(rest);
 
-    return NextResponse.json({ id: created._id.toString() }, { status: 201 });
+    return NextResponse.json(
+      { id: created._id.toString(), ...rest },
+      { status: 201 },
+    );
   } catch (err) {
     console.error("POST /object error:", err);
     return NextResponse.json(

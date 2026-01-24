@@ -5,9 +5,9 @@ import Canvas from "@/components/Canvas";
 import { ObjectsProvider } from "@/utility/useObjects";
 import { ZoomProvider } from "@/utility/useZoom";
 
-export default function Editor({ workspaceID }: { workspaceID: string }) {
+export default function Editor({ projectId }: { projectId: string }) {
   return (
-    <ObjectsProvider>
+    <ObjectsProvider projectId={projectId}>
       <ZoomProvider>
         <div className="flex h-screen overflow-hidden">
           <Canvas />

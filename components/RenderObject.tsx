@@ -12,6 +12,7 @@ export default function RenderObject({
   parentId: string | null;
 }) {
   const { setSelectedId, objects, selectedId } = useObjects();
+
   const patchObject = usePatchObject();
 
   const { x, y, startDragging } = useDrag(

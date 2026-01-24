@@ -1,5 +1,5 @@
 import { getAuthUser } from "@/utility/auth";
-import { ProjectModel, UserModel } from "@/db/schema";
+import { ProjectModel } from "@/db/schema";
 import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 

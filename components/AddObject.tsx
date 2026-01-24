@@ -3,36 +3,6 @@ import { useObjects, Object } from "@/utility/useObjects";
 export default function AddObject() {
   const { setObjects, setSelectedId } = useObjects();
 
-  const defaultObj: Object = {
-    id: "temporary id",
-    isTopLayerElement: true,
-    position: "absolute",
-
-    x: 100,
-    y: 100,
-    width: 100,
-    height: 100,
-
-    margin: 10,
-    padding: 10,
-
-    borderRadius: 0,
-    borderWidth: 0,
-    borderColor: "#000000",
-    boxShadow: 0,
-
-    backgroundColor: "#FAEBD7",
-
-    justifyContent: "center",
-    alignItems: "center",
-    rowGap: 0,
-    columnGap: 0,
-
-    text: "",
-
-    children: [],
-  };
-
   async function clickHandler() {
     try {
       const res = await fetch("/api/object", {
@@ -40,22 +10,16 @@ export default function AddObject() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(defaultObj),
       });
 
       if (!res.ok) {
         throw new Error("Failed to create object");
       }
 
-      const data: { id: string } = await res.json();
+      const createdObject: Object = await res.json();
 
-      const createdObj: Object = {
-        ...defaultObj,
-        id: data.id,
-      };
-
-      setObjects((prev) => [...prev, createdObj]);
-      setSelectedId(data.id);
+      setObjects((prev) => [...prev, createdObject]);
+      setSelectedId(createdObject.id);
     } catch (error) {
       console.error(error);
     }

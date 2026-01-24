@@ -25,7 +25,7 @@ export async function getAuthUser() {
   try {
     decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new Error("INVALID_TOKEN");
   }
 
