@@ -7,7 +7,6 @@ export async function GET() {
   // get authenticated user
   let user;
   try {
-    // get authenticated user
     user = await getAuthUser();
   } catch {
     return NextResponse.json(
@@ -16,18 +15,22 @@ export async function GET() {
     );
   }
 
+  // getting all projects of the user
+  let projects;
   try {
     await dbConnect();
 
-    const projects = await ProjectModel.find({
+    projects = await ProjectModel.find({
       ownerId: user._id,
     });
-
-    return Response.json(projects, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  } catch {
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 },
+    );
   }
+
+  return Response.json(projects, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
