@@ -9,7 +9,7 @@ export function useDrag(
   initialY: number,
   width: number,
   height: number,
-  id: string,
+  _id: string,
 ) {
   const { selectedId, setSelectedId, objects } = useObjects();
   const patchObject = usePatchObject();
@@ -22,7 +22,7 @@ export function useDrag(
     posRef.current = pos;
   }, [pos]);
 
-  const selected = selectedId === id;
+  const selected = selectedId === _id;
 
   const startDragging = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -31,7 +31,7 @@ export function useDrag(
     if (e.currentTarget !== e.target) return;
 
     if (!selected) {
-      setSelectedId(id);
+      setSelectedId(_id);
       return;
     }
 
@@ -41,7 +41,7 @@ export function useDrag(
     };
 
     const startPos = { ...posRef.current };
-    const otherObjects = objects.filter((o) => o.id !== id);
+    const otherObjects = objects.filter((o) => o._id !== _id);
 
     const onMove = (e: MouseEvent) => {
       const cursor = {
@@ -72,7 +72,7 @@ export function useDrag(
       };
 
       await patchObject(
-        id,
+        _id,
         snapToObjects(nextPos, { width, height }, otherObjects),
       );
     };

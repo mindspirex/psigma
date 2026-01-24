@@ -25,7 +25,7 @@ export default function AddObject() {
       const createdObject: Object = await res.json();
 
       setObjects((prev) => [...prev, createdObject]);
-      setSelectedId(createdObject.id);
+      setSelectedId(createdObject._id);
     } catch (error) {
       console.error(error);
     }

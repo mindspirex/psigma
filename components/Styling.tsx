@@ -20,7 +20,7 @@ export default function Styling() {
       const res = await fetch("/api/object", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: selectedId }),
+        body: JSON.stringify({ _id: selectedId }),
       });
 
       if (!res.ok) {
@@ -28,14 +28,14 @@ export default function Styling() {
         throw new Error(error.error || "Failed to delete object");
       }
 
-      setObjects((prev) => prev.filter((object) => object.id !== selectedId));
+      setObjects((prev) => prev.filter((object) => object._id !== selectedId));
       setSelectedId(null);
     } catch (err) {
       console.error("Delete failed:", err);
     }
   }
 
-  const selectedObject = objects.find((o) => o.id === selectedId);
+  const selectedObject = objects.find((o) => o._id === selectedId);
 
   if (!selectedObject) {
     return (

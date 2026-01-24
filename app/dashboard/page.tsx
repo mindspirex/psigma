@@ -66,9 +66,9 @@ export default function Dashboard() {
     }
   };
 
-  const deleteProject = async (id: string) => {
+  const deleteProject = async (_id: string) => {
     try {
-      const res = await fetch(`/api/projects?id=${id}`, {
+      const res = await fetch(`/api/projects?projectId=${_id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -77,7 +77,7 @@ export default function Dashboard() {
         throw new Error("Delete failed");
       }
 
-      setProjects((p) => p.filter((project) => project._id !== id));
+      setProjects((p) => p.filter((project) => project._id !== _id));
     } catch (error) {
       console.error(error);
     }
