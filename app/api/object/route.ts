@@ -1,8 +1,7 @@
-import { ObjectModel } from "@/db/schema";
+import { ObjectModel, ProjectModel } from "@/db/schema";
 import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/utility/authentication";
-import { ProjectModel } from "@/db/schema";
 
 export async function GET(request: NextRequest) {
   // get projectId from query parameters
