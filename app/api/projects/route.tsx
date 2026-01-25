@@ -1,10 +1,10 @@
-import { getAuthUser } from "@/utility/auth";
+import { getAuthUser } from "@/utility/authentication";
 import { ProjectModel } from "@/db/schema";
 import dbConnect from "@/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  // get authenticated user
+  // authentication
   let userId;
   try {
     userId = await getAuthUser();
@@ -34,7 +34,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  // get authenticated user
+  // authentication
   let userId;
   try {
     userId = await getAuthUser();
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  // get authenticated user
+  // authentication
   let userId;
   try {
     userId = await getAuthUser();
