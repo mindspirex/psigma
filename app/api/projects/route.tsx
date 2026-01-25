@@ -8,7 +8,8 @@ export async function GET() {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -23,7 +24,8 @@ export async function GET() {
     projects = await ProjectModel.find({
       ownerId: userId,
     });
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -38,7 +40,8 @@ export async function POST(request: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -48,6 +51,7 @@ export async function POST(request: NextRequest) {
   // retrieve name from body
   const body = await request.json();
   if (!body?.name) {
+    console.log("name is undefined");
     return Response.json(
       { message: "project name is required" },
       { status: 400 },
@@ -64,7 +68,8 @@ export async function POST(request: NextRequest) {
       name,
       ownerId: userId,
     });
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -79,7 +84,8 @@ export async function DELETE(request: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -90,21 +96,26 @@ export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const projectId = searchParams.get("id");
   if (!projectId) {
+    console.log("projectId is undefined");
     return NextResponse.json(
       { message: "projectId not found" },
       { status: 400 },
     );
   }
 
-  // delete from db
+  // connect db
   try {
     await dbConnect();
+  } catch (error) {
+    console.log(error);
+  }
 
+  // delete from db
+  try {
     const deletedProject = await ProjectModel.findOneAndDelete({
       _id: projectId,
       ownerId: userId,
     });
-
     if (!deletedProject) {
       return NextResponse.json(
         { message: "project not found" },

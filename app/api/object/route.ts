@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
   // get projectId from query parameters
   const projectId = request.nextUrl.searchParams.get("projectId");
   if (!projectId) {
+    console.log("projectId is undefined");
     return NextResponse.json(
       { message: "projectId is required" },
       { status: 400 },
@@ -17,7 +18,8 @@ export async function GET(request: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -27,7 +29,8 @@ export async function GET(request: NextRequest) {
   // connect db
   try {
     await dbConnect();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -40,6 +43,7 @@ export async function GET(request: NextRequest) {
     ownerId: userId,
   });
   if (!project) {
+    console.log("project is undefined");
     return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
@@ -47,7 +51,8 @@ export async function GET(request: NextRequest) {
   let objects;
   try {
     objects = await ObjectModel.find({ projectId }).lean();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "internal server error" },
       { status: 500 },
@@ -66,6 +71,7 @@ export async function POST(request: NextRequest) {
   // get projectId from query parameters
   const projectId = request.nextUrl.searchParams.get("projectId");
   if (!projectId) {
+    console.log("projectId doesn't exist");
     return NextResponse.json(
       { message: "projectId is required" },
       { status: 400 },
@@ -76,7 +82,8 @@ export async function POST(request: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -86,7 +93,8 @@ export async function POST(request: NextRequest) {
   // connect db
   try {
     await dbConnect();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server errror" },
       { status: 500 },
@@ -99,6 +107,7 @@ export async function POST(request: NextRequest) {
     ownerId: userId,
   });
   if (!project) {
+    console.log("project is undefined");
     return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
@@ -111,7 +120,8 @@ export async function POST(request: NextRequest) {
     });
 
     ({ _id, ...rest } = created._doc);
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "internal server error" },
       { status: 500 },
@@ -128,6 +138,7 @@ export async function PATCH(req: NextRequest) {
 
   // check for undefined fields
   if (!_id || !projectId) {
+    console.log("_id or projectId is undefined");
     return NextResponse.json(
       { message: "objectId and projectId required" },
       { status: 400 },
@@ -138,7 +149,8 @@ export async function PATCH(req: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -148,7 +160,8 @@ export async function PATCH(req: NextRequest) {
   // connect db
   try {
     await dbConnect();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -161,6 +174,7 @@ export async function PATCH(req: NextRequest) {
     ownerId: userId,
   });
   if (!project) {
+    console.log("project is undefined");
     return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
@@ -171,6 +185,7 @@ export async function PATCH(req: NextRequest) {
     { new: true },
   );
   if (!updated) {
+    console.log("updated is undefined");
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -187,13 +202,15 @@ export async function DELETE(req: NextRequest) {
   let _id;
   try {
     ({ _id } = await req.json());
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "objectId is required" },
       { status: 400 },
     );
   }
   if (!_id) {
+    console.log("_id is undefined");
     return NextResponse.json(
       { message: "objectId is required" },
       { status: 400 },
@@ -204,7 +221,8 @@ export async function DELETE(req: NextRequest) {
   let userId;
   try {
     userId = await getAuthUser();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "user not authenticated" },
       { status: 401 },
@@ -214,7 +232,8 @@ export async function DELETE(req: NextRequest) {
   // connect db
   try {
     await dbConnect();
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "internal server error" },
       { status: 500 },
@@ -224,6 +243,7 @@ export async function DELETE(req: NextRequest) {
   // get projectId
   const object = await ObjectModel.findById(_id);
   if (!object) {
+    console.log("object is undefined");
     return NextResponse.json(
       { message: "object doesn't exist" },
       { status: 404 },
@@ -231,6 +251,7 @@ export async function DELETE(req: NextRequest) {
   }
   const projectId = object.projectId;
   if (!projectId) {
+    console.log("projectId is undefined");
     return NextResponse.json({ message: "invalid object" }, { status: 400 });
   }
 
@@ -240,6 +261,7 @@ export async function DELETE(req: NextRequest) {
     ownerId: userId,
   });
   if (!project) {
+    console.log("project is undefined");
     return NextResponse.json({ error: "user not authorized" }, { status: 403 });
   }
 
@@ -248,9 +270,11 @@ export async function DELETE(req: NextRequest) {
     const deleted = await ObjectModel.findByIdAndDelete(_id);
 
     if (!deleted) {
+      console.log("deleted is undefined");
       return NextResponse.json({ error: "Object not found" }, { status: 404 });
     }
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "internal server error" },
       { status: 500 },
