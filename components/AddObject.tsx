@@ -10,12 +10,11 @@ export default function AddObject() {
 
   async function clickHandler() {
     try {
-      const res = await fetch("/api/object", {
+      const res = await fetch(`/api/object?projectId=${projectId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ projectId: projectId }),
       });
 
       if (!res.ok) {
