@@ -44,20 +44,35 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    // getting projectId from body
-    const body = await req.json();
-    const { projectId } = body;
+export async function POST(request: NextRequest) {
+  // get projectId from query parameters
+  const projectId = request.nextUrl.searchParams.get("projectId");
+  if (!projectId) {
+    return NextResponse.json(
+      { error: "projectId is required" },
+      { status: 400 },
+    );
+  }
 
+  // authorization
+  const userId = await getAuthUser();
+  const project = await ProjectModel.findOne({
+    _id: projectId,
+    ownerId: userId,
+  });
+  if (!project) {
+    return NextResponse.json({ error: "user not authorized" }, { status: 403 });
+  }
+
+  let _id;
+  let rest;
+  try {
     await dbConnect();
     const created = await ObjectModel.create({
       projectId: projectId,
     });
 
-    const { _id, ...rest } = created._doc;
-
-    return NextResponse.json({ _id: _id.toString(), ...rest }, { status: 201 });
+    ({ _id, ...rest } = created._doc);
   } catch (err) {
     console.error("POST /object error:", err);
     return NextResponse.json(
@@ -65,6 +80,8 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
+
+  return NextResponse.json({ _id: _id.toString(), ...rest }, { status: 201 });
 }
 
 export async function PATCH(req: NextRequest) {
