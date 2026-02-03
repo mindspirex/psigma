@@ -47,8 +47,9 @@ export async function POST(req: Request) {
   }
 
   // create user on db
+  let createdUser;
   try {
-    await UserModel.create({
+    createdUser = await UserModel.create({
       name,
       email,
       password: hashedPassword,
@@ -59,8 +60,9 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
   return NextResponse.json(
-    { message: "User registered successfully" },
+    { _id: createdUser._id.toString() },
     { status: 201 },
   );
 }

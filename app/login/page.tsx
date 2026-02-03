@@ -42,7 +42,18 @@ export default function LoginPage() {
     }
   };
 
-  const handleGuestContinue = () => {
+  const handleGuestContinue = async () => {
+    try {
+      await fetch("/api/auth/guest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch {
+      console.log("guest login failed");
+    }
+
     router.push("/dashboard");
   };
 

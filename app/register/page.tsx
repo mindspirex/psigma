@@ -36,7 +36,7 @@ export default function SignupPage() {
         throw new Error(data.message || "Registration failed");
       }
 
-      router.push("/dashboard");
+      router.push("/login");
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert(error.message);
