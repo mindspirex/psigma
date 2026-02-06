@@ -21,6 +21,7 @@ export default function RenderObject({
     object.width,
     object.height,
     object._id,
+    object.projectId,
   );
 
   const selected = selectedId === object._id;

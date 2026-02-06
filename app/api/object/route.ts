@@ -133,10 +133,9 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   // get data from body
-  const { _id, ...data } = await req.json();
-  const projectId = data.projectId;
+  const { _id, projectId, ...data } = await req.json();
 
-  // check for undefined fields
+  // check for undef ined fields
   if (!_id || !projectId) {
     console.log("_id or projectId is undefined");
     return NextResponse.json(
