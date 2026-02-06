@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  // edit cookie
   const res = NextResponse.json({ message: "logout successful" });
-  res.cookies.delete("access_token");
+
+  // edit cookie
+  res.cookies.set("access_token", "", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+    expires: new Date(0),
+  });
 
   return res;
 }
