@@ -85,7 +85,7 @@ export default function Dashboard() {
 
   const logout = async () => {
     try {
-      await fetch("/api/logout", {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
