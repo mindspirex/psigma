@@ -13,12 +13,7 @@ export default function Canvas() {
   return (
     <div
       ref={panRef}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        overflow: "auto",
-        overscrollBehavior: "none",
-      }}
+      className="w-[calc(100vw-20rem)] h-screen overflow-auto overscroll-none"
     >
       <div
         style={{

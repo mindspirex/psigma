@@ -5,6 +5,7 @@ export function usePatchObject() {
 
   return async function patchObject(
     _id: string,
+    projectId: string,
     fields: Record<string, unknown>,
   ) {
     const sanitizedFields = {
@@ -22,7 +23,7 @@ export function usePatchObject() {
     await fetch("/api/object", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ _id, ...sanitizedFields }),
+      body: JSON.stringify({ _id, projectId, ...sanitizedFields }),
     });
 
     setObjects((prevObjects) =>

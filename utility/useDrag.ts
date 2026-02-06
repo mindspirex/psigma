@@ -10,6 +10,7 @@ export function useDrag(
   width: number,
   height: number,
   _id: string,
+  projectId: string,
 ) {
   const { selectedId, setSelectedId, objects } = useObjects();
   const patchObject = usePatchObject();
@@ -73,6 +74,7 @@ export function useDrag(
 
       await patchObject(
         _id,
+        projectId,
         snapToObjects(nextPos, { width, height }, otherObjects),
       );
     };

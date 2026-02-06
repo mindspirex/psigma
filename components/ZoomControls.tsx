@@ -4,7 +4,7 @@ export default function ZoomControls() {
   const { zoomIn, zoomOut } = useZoom();
 
   return (
-    <div className="absolute bottom-4 right-4 z-50 flex gap-2">
+    <div className="fixed top-4 right-90 z-50 flex gap-2">
       <button
         onClick={zoomIn}
         className="w-10 h-10 flex items-center justify-center rounded-full
