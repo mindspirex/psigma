@@ -83,10 +83,32 @@ export default function Dashboard() {
     }
   };
 
+  const logout = async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      router.push("/login");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-3xl">
-        <h1 className="mb-6 text-3xl font-bold">📁 Dashboard</h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">📁 Dashboard</h1>
+
+          <button
+            onClick={logout}
+            className="rounded-md bg-gray-800 px-4 py-2 text-white hover:bg-black"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* Add project */}
         <div className="mb-6 flex gap-2">
