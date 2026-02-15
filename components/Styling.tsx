@@ -2,17 +2,19 @@
 
 import { useObjects, Object } from "@/utility/useObjects";
 import { usePatchObject } from "@/utility/usePatchObject";
-
+import { usePathname } from "next/navigation";
 import NumberInput from "@/components/NumberInput";
 import ColorInput from "@/components/ColorInput";
 
 export default function Styling() {
   const { objects, selectedId, setObjects, setSelectedId } = useObjects();
   const patchObject = usePatchObject();
+  const pathname = usePathname();
+  const projectId = pathname.split("/")[2];
 
   function update<K extends keyof Object>(key: K, value: Object[K]) {
     if (!selectedId) return;
-    patchObject(selectedId, { [key]: value });
+    patchObject(selectedId, projectId, { [key]: value });
   }
 
   async function deleteObject() {
