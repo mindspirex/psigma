@@ -3,6 +3,7 @@
 import { Object, useObjects } from "@/utility/useObjects";
 import { useDrag } from "@/utility/useDrag";
 import { usePatchObject } from "@/utility/usePatchObject";
+import { usePathname } from "next/navigation";
 
 export default function RenderObject({
   object,
@@ -54,15 +55,18 @@ export default function RenderObject({
     outline: selected ? "2px solid #4c8bf5" : "none",
   };
 
+  const pathname = usePathname();
+  const projectId = pathname.split("/")[2];
+
   const detachFromParent = (objectId: string) => {
-    patchObject(objectId, {
+    patchObject(objectId, projectId, {
       isTopLayerElement: true,
       x: parent ? parent.x : 0,
       y: parent ? parent.y : 0,
       position: "absolute",
     });
     if (parentId) {
-      patchObject(parentId, {
+      patchObject(parentId, projectId, {
         children: parent
           ? parent.children.filter((childId: string) => childId !== objectId)
           : [],
@@ -99,12 +103,12 @@ export default function RenderObject({
       (a, b) => a.width * a.height - b.width * b.height,
     )[0];
 
-    patchObject(target._id, {
+    patchObject(target._id, projectId, {
       children: [...target.children, object._id],
     });
 
     // attach to new parent
-    patchObject(object._id, {
+    patchObject(object._id, projectId, {
       position: "static",
       isTopLayerElement: false,
     });
